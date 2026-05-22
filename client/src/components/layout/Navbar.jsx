@@ -11,7 +11,7 @@ function Navbar() {
           Shopix
         </Link>
 
-        <div className="flex items-center gap-6">
+        <div className="items-center gap-6 flex">
           <Link
             to="/"
             className="text-sm font-medium text-zinc-700 transition hover:text-black"

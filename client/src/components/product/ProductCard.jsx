@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-function ProductCard() {
+function ProductCard({ product }) {
   return (
     <motion.div
       whileHover={{ y: -8 }}
@@ -8,22 +8,22 @@ function ProductCard() {
       className="overflow-hidden rounded-3xl bg-white shadow-sm transition hover:shadow-xl"
     >
       <img
-        src="https://images.unsplash.com/photo-1542291026-7eec264c27ff"
-        alt="product"
+        src={product.image}
+        alt={product.title}
         className="h-72 w-full object-cover"
       />
 
       <div className="p-5">
-        <h3 className="text-lg font-semibold text-zinc-900">
-          Premium Sneakers
+        <p className="text-sm font-medium text-blue-600">{product.category}</p>
+
+        <h3 className="mt-2 text-lg font-semibold text-zinc-900">
+          {product.title}
         </h3>
 
-        <p className="mt-2 text-sm text-zinc-500">
-          Comfortable stylish sneakers for everyday use.
-        </p>
-
-        <div className="mt-4 flex items-center justify-between">
-          <span className="text-xl font-bold text-zinc-900">$120</span>
+        <div className="mt-5 flex items-center justify-between">
+          <span className="text-xl font-bold text-zinc-900">
+            ${product.price}
+          </span>
 
           <button className="rounded-xl bg-black px-4 py-2 text-sm font-medium text-white transition hover:scale-105">
             Add to Cart

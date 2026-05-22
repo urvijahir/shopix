@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import Button from "../components/ui/Button";
 import FeaturedProducts from "../components/product/FeaturedProducts";
+import CategorySection from "../components/category/CategorySection";
 
 function HomePage() {
   return (
@@ -50,6 +51,7 @@ function HomePage() {
           />
         </motion.div>
       </section>
+      <CategorySection />
       <FeaturedProducts />
     </div>
   );

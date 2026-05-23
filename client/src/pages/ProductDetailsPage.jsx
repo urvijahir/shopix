@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
-import products from "../data/products";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
 
@@ -8,8 +9,29 @@ function ProductDetailsPage() {
 
   const dispatch = useDispatch();
 
-  const product = products.find((item) => item.id === Number(id));
+  const [product, setProduct] = useState(null);
 
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const { data } = await axios.get("http://localhost:5000/api/products");
+
+        const foundProduct = data.find((item) => item.id === Number(id));
+
+        setProduct(foundProduct);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
+
+  if (!product) {
+    return (
+      <div className="py-20 text-center text-2xl font-bold">Loading...</div>
+    );
+  }
   return (
     <section className="mx-auto grid max-w-7xl gap-12 px-6 py-16 md:grid-cols-2">
       <div>

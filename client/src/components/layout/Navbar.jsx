@@ -1,9 +1,16 @@
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../redux/authSlice";
 
 function Navbar() {
   const { cartItems } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
+
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
+
   return (
     <nav className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -31,12 +38,27 @@ function Navbar() {
             Cart ({cartItems.length})
           </Link>
 
-          <Link
-            to="/login"
-            className="rounded-xl bg-black px-5 py-2 text-sm font-medium text-white transition hover:scale-105"
-          >
-            {userInfo ? userInfo.name : "Login"}
-          </Link>
+          {userInfo ? (
+            <div className="flex items-center gap-4">
+              <span className="font-semibold text-zinc-800">
+                {userInfo.name}
+              </span>
+
+              <button
+                onClick={logoutHandler}
+                className="rounded-xl bg-black px-5 py-2 text-white"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="rounded-xl bg-black px-5 py-2 text-white"
+            >
+              Login
+            </Link>
+          )}
         </div>
       </div>
     </nav>

@@ -1,30 +1,7 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-
 import ProductCard from "./ProductCard";
 import ProductSkeleton from "../ui/ProductSkeleton";
 
-function FeaturedProducts() {
-  const [products, setProducts] = useState([]);
-
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const { data } = await axios.get("http://localhost:5000/api/products");
-
-        setProducts(data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
+function FeaturedProducts({ products, loading, search, setSearch }) {
   return (
     <section className="mx-auto max-w-7xl px-6 py-20">
       <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -41,6 +18,8 @@ function FeaturedProducts() {
         <input
           type="text"
           placeholder="Search products..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           className="rounded-xl border border-zinc-300 px-4 py-3 outline-none transition focus:border-black"
         />
       </div>
@@ -52,8 +31,16 @@ function FeaturedProducts() {
             <ProductSkeleton />
             <ProductSkeleton />
           </>
-        ) : (
+        ) : products.length > 0 ? (
           products.map((item) => <ProductCard key={item.id} product={item} />)
+        ) : (
+          <div className="col-span-full rounded-3xl bg-white p-10 text-center shadow-sm">
+            <h3 className="text-2xl font-bold text-zinc-900">
+              No Products Found
+            </h3>
+
+            <p className="mt-3 text-zinc-500">Try searching another product.</p>
+          </div>
         )}
       </div>
     </section>

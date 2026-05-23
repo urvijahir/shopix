@@ -1,7 +1,30 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 import ProductCard from "./ProductCard";
-import products from "../../data/products";
+import ProductSkeleton from "../ui/ProductSkeleton";
 
 function FeaturedProducts() {
+  const [products, setProducts] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const { data } = await axios.get("http://localhost:5000/api/products");
+
+        setProducts(data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   return (
     <section className="mx-auto max-w-7xl px-6 py-20">
       <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -15,7 +38,6 @@ function FeaturedProducts() {
           </h2>
         </div>
 
-        {/* SEARCH INPUT */}
         <input
           type="text"
           placeholder="Search products..."
@@ -23,11 +45,16 @@ function FeaturedProducts() {
         />
       </div>
 
-      {/* PRODUCT GRID */}
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {products.map((item) => (
-          <ProductCard key={item.id} product={item} />
-        ))}
+        {loading ? (
+          <>
+            <ProductSkeleton />
+            <ProductSkeleton />
+            <ProductSkeleton />
+          </>
+        ) : (
+          products.map((item) => <ProductCard key={item.id} product={item} />)
+        )}
       </div>
     </section>
   );

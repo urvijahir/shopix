@@ -3,7 +3,7 @@ import axios from "axios";
 
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../redux/authSlice";
-
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
@@ -29,8 +29,10 @@ function LoginPage() {
 
       dispatch(setCredentials(data));
 
+      toast.success("Login successful");
       navigate("/");
     } catch (error) {
+      toast.error("Invalid credentials");
       console.log(error);
     }
   };

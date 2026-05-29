@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { motion } from "framer-motion";
+import toast from "react-hot-toast";
+import { clearCart } from "../redux/cartSlice";
 
 function CheckoutPage() {
   const dispatch = useDispatch();
@@ -39,6 +41,10 @@ function CheckoutPage() {
     e.preventDefault();
 
     setOrderPlaced(true);
+
+    toast.success("Order placed successfully");
+
+    dispatch(clearCart());
 
     setShippingData({
       fullName: "",

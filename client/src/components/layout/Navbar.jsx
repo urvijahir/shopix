@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/authSlice";
+import toast from "react-hot-toast";
 
 function Navbar() {
   const { cartItems } = useSelector((state) => state.cart);
@@ -9,6 +10,8 @@ function Navbar() {
 
   const logoutHandler = () => {
     dispatch(logout());
+
+    toast.success("Logged out successfully");
   };
 
   return (

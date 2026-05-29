@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
+import toast from "react-hot-toast";
 
 function ProductDetailsPage() {
   const { id } = useParams();
@@ -61,7 +62,16 @@ function ProductDetailsPage() {
           </span>
 
           <button
-            onClick={() => dispatch(addToCart(product))}
+            onClick={() => {
+              dispatch(
+                addToCart({
+                  ...product,
+                  quantity: 1,
+                }),
+              );
+
+              toast.success("Product added to cart");
+            }}
             className="rounded-xl bg-black px-6 py-3 font-medium text-white transition hover:scale-105"
           >
             Add To Cart

@@ -1,8 +1,14 @@
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import { addToWishlist } from "../../redux/wishlistSlice";
+
+import toast from "react-hot-toast";
 
 function ProductCard({ product }) {
+  const dispatch = useDispatch();
   return (
-    <div className="overflow-hidden rounded-3xl bg-white dark:bg-zinc-900 shadow-sm transition hover:-translate-y-2 hover:shadow-xl">
+    <div className="overflow-hidden rounded-3xl bg-white dark:bg-zinc-900 shadow-sm transition hover:-translate-y-2 hover:shadow-xl relative">
       {/* IMAGE */}
       <Link to={`/product/${product.id}`}>
         <img
@@ -22,7 +28,7 @@ function ProductCard({ product }) {
           {product.title}
         </h2>
 
-        <div className="mt-8 flex items-center justify-between">
+        <div className="mt-8 flex items-center justify-between ">
           <span className="text-4xl font-bold text-zinc-900 dark:text-white">
             ${product.price}
           </span>
@@ -33,6 +39,17 @@ function ProductCard({ product }) {
           >
             View
           </Link>
+
+          <button
+            onClick={() => {
+              dispatch(addToWishlist(product));
+
+              toast.success("Added to wishlist");
+            }}
+            className="absolute right-4 top-4 z-10 rounded-full bg-white p-3 shadow-md dark:bg-zinc-900"
+          >
+            ❤️
+          </button>
         </div>
       </div>
     </div>

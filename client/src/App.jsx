@@ -9,6 +9,8 @@ import CartPage from "./pages/CartPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import PrivateRoute from "./components/PrivateRoute";
 import CheckoutPage from "./pages/CheckoutPage";
+import WishlistPage from "./pages/WishlistPage";
+import AdminDashboardPage from "./pages/AdminDashboardPage";
 
 function App() {
   return (
@@ -22,8 +24,10 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/wishlist" element={<WishlistPage />} />
         </Route>
         <Route path="/product/:id" element={<ProductDetailsPage />} />
+        <Route path="/admin" element={<AdminDashboardPage />} />
       </Routes>
     </div>
   );

@@ -18,7 +18,7 @@ function HeroSection() {
           </p>
 
           <div className="mt-10 flex gap-4">
-            <button className="rounded-2xl bg-black px-8 py-4 font-medium text-white transition hover:scale-105">
+            <button className="rounded-2xl bg-black dark:bg-white px-8 py-4 font-medium text-white dark:text-black transition hover:scale-105">
               Shop Now
             </button>
 

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
 import toast from "react-hot-toast";
+import ProductReviews from "../components/product/ProductReviews";
 
 function ProductDetailsPage() {
   const { id } = useParams();
@@ -78,6 +79,7 @@ function ProductDetailsPage() {
           </button>
         </div>
       </div>
+      <ProductReviews />
     </section>
   );
 }

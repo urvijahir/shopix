@@ -43,19 +43,21 @@ function HomePage() {
 
   return (
     <>
-      <HeroSection />
+      <div className="bg-white dark:bg-zinc-950 min-h-screen">
+        <HeroSection />
 
-      <CategorySection
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-      />
+        <CategorySection
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
 
-      <FeaturedProducts
-        products={filteredProducts}
-        loading={loading}
-        search={search}
-        setSearch={setSearch}
-      />
+        <FeaturedProducts
+          products={filteredProducts}
+          loading={loading}
+          search={search}
+          setSearch={setSearch}
+        />
+      </div>
     </>
   );
 }

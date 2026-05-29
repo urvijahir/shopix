@@ -34,7 +34,7 @@ function ProductDetailsPage() {
     );
   }
   return (
-    <section className="mx-auto grid max-w-7xl gap-12 px-6 py-16 md:grid-cols-2">
+    <section className="mx-auto grid max-w-7xl gap-12 bg-white px-6 py-16 dark:bg-zinc-950 md:grid-cols-2">
       <div>
         <img
           src={product.image}
@@ -48,16 +48,16 @@ function ProductDetailsPage() {
           {product.category}
         </p>
 
-        <h1 className="mt-3 text-5xl font-bold text-zinc-900">
+        <h1 className="mt-3 text-5xl font-bold text-zinc-900 dark:text-white">
           {product.title}
         </h1>
 
-        <p className="mt-6 text-lg leading-8 text-zinc-600">
+        <p className="mt-6 text-lg leading-8 text-zinc-600 dark:text-zinc-300">
           Premium quality product designed for modern lifestyle and comfort.
         </p>
 
         <div className="mt-8 flex items-center gap-6">
-          <span className="text-4xl font-bold text-zinc-900">
+          <span className="text-4xl font-bold text-zinc-900 dark:text-white">
             ${product.price}
           </span>
 
@@ -72,7 +72,7 @@ function ProductDetailsPage() {
 
               toast.success("Product added to cart");
             }}
-            className="rounded-xl bg-black px-6 py-3 font-medium text-white transition hover:scale-105"
+            className="rounded-xl bg-black px-6 py-3 font-medium text-white transition hover:scale-105 dark:bg-white dark:text-black"
           >
             Add To Cart
           </button>

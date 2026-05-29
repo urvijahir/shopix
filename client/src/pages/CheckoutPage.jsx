@@ -56,7 +56,7 @@ function CheckoutPage() {
   };
 
   return (
-    <section className="min-h-screen bg-zinc-100 px-6 py-16">
+    <section className="min-h-screen bg-zinc-100 dark:bg-zinc-950 px-6 py-16">
       <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-3">
         {/* LEFT */}
         <motion.div
@@ -65,7 +65,7 @@ function CheckoutPage() {
           transition={{ duration: 0.5 }}
           className="lg:col-span-2"
         >
-          <div className="rounded-3xl bg-white p-8 shadow-sm">
+          <div className="rounded-3xl bg-white  dark:bg-zinc-900 p-8 shadow-sm">
             <h1 className="mb-8 text-4xl font-bold text-zinc-900">
               Shipping Details
             </h1>
@@ -77,7 +77,7 @@ function CheckoutPage() {
                 placeholder="Full Name"
                 value={shippingData.fullName}
                 onChange={handleChange}
-                className="w-full rounded-2xl border border-zinc-200 px-5 py-4 outline-none focus:border-black"
+                className="w-full rounded-2xl border border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white px-5 py-4 outline-none focus:border-black"
                 required
               />
 
@@ -87,7 +87,7 @@ function CheckoutPage() {
                 placeholder="Address"
                 value={shippingData.address}
                 onChange={handleChange}
-                className="w-full rounded-2xl border border-zinc-200 px-5 py-4 outline-none focus:border-black"
+                className="w-full rounded-2xl border border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white px-5 py-4 outline-none focus:border-black"
                 required
               />
 
@@ -98,7 +98,7 @@ function CheckoutPage() {
                   placeholder="City"
                   value={shippingData.city}
                   onChange={handleChange}
-                  className="w-full rounded-2xl border border-zinc-200 px-5 py-4 outline-none focus:border-black"
+                  className="w-full rounded-2xl border border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-whites px-5 py-4 outline-none focus:border-black"
                   required
                 />
 
@@ -108,7 +108,7 @@ function CheckoutPage() {
                   placeholder="Postal Code"
                   value={shippingData.postalCode}
                   onChange={handleChange}
-                  className="w-full rounded-2xl border border-zinc-200 px-5 py-4 outline-none focus:border-black"
+                  className="w-full rounded-2xl border border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white px-5 py-4 outline-none focus:border-black"
                   required
                 />
               </div>
@@ -119,7 +119,7 @@ function CheckoutPage() {
                 placeholder="Country"
                 value={shippingData.country}
                 onChange={handleChange}
-                className="w-full rounded-2xl border border-zinc-200 px-5 py-4 outline-none focus:border-black"
+                className="w-full rounded-2xl border border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white px-5 py-4 outline-none focus:border-black"
                 required
               />
 
@@ -157,7 +157,7 @@ function CheckoutPage() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="sticky top-24 rounded-3xl bg-white p-8 shadow-sm">
+          <div className="sticky top-24 rounded-3xl bg-white  dark:bg-zinc-900 p-8 shadow-sm">
             <h2 className="mb-8 text-3xl font-bold text-zinc-900">
               Order Summary
             </h2>
@@ -169,7 +169,9 @@ function CheckoutPage() {
                   className="flex items-center justify-between"
                 >
                   <div>
-                    <p className="font-semibold text-zinc-800">{item.title}</p>
+                    <p className="font-semibold text-zinc-800 dark:text-white">
+                      {item.title}
+                    </p>
 
                     <span className="text-sm text-zinc-500">
                       Qty: {item.quantity}

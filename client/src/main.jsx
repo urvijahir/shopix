@@ -6,14 +6,16 @@ import { store } from "./redux/store";
 import { Toaster } from "react-hot-toast";
 import "./index.css";
 import App from "./App.jsx";
-
+import { ThemeProvider } from "./context/ThemeContext";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <App />
+        <ThemeProvider>
+          <App />
 
-        <Toaster position="top-right" reverseOrder={false} />
+          <Toaster position="top-right" reverseOrder={false} />
+        </ThemeProvider>
       </BrowserRouter>
     </Provider>
   </StrictMode>,

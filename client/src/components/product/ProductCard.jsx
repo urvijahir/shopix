@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function ProductCard({ product }) {
   return (
-    <div className="overflow-hidden rounded-3xl bg-white shadow-sm transition hover:-translate-y-2 hover:shadow-xl">
+    <div className="overflow-hidden rounded-3xl bg-white dark:bg-zinc-900 shadow-sm transition hover:-translate-y-2 hover:shadow-xl">
       {/* IMAGE */}
       <Link to={`/product/${product.id}`}>
         <img
@@ -18,12 +18,12 @@ function ProductCard({ product }) {
           {product.category}
         </p>
 
-        <h2 className="mt-4 text-2xl font-bold text-zinc-900">
+        <h2 className="mt-4 text-2xl font-bold text-zinc-900 dark:bg-zinc-900 dark:text-white">
           {product.title}
         </h2>
 
         <div className="mt-8 flex items-center justify-between">
-          <span className="text-4xl font-bold text-zinc-900">
+          <span className="text-4xl font-bold text-zinc-900 dark:text-white">
             ${product.price}
           </span>
 

@@ -1,9 +1,13 @@
 import { useState } from "react";
+
 import axios from "axios";
 
 import { useDispatch } from "react-redux";
+
 import { setCredentials } from "../redux/authSlice";
+
 import toast from "react-hot-toast";
+
 import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
@@ -30,20 +34,24 @@ function LoginPage() {
       dispatch(setCredentials(data));
 
       toast.success("Login successful");
+
       navigate("/");
     } catch (error) {
       toast.error("Invalid credentials");
+
       console.log(error);
     }
   };
 
   return (
-    <section className="flex min-h-screen items-center justify-center px-6">
+    <section className="flex min-h-screen items-center justify-center bg-zinc-100 px-6 dark:bg-zinc-950">
       <form
         onSubmit={submitHandler}
-        className="w-full max-w-md rounded-3xl bg-white p-8 shadow-lg"
+        className="w-full max-w-md rounded-3xl bg-white p-8 shadow-lg dark:bg-zinc-900"
       >
-        <h1 className="mb-8 text-4xl font-bold text-zinc-900">Login</h1>
+        <h1 className="mb-8 text-4xl font-bold text-zinc-900 dark:text-white">
+          Login
+        </h1>
 
         <div className="space-y-5">
           <input
@@ -51,7 +59,7 @@ function LoginPage() {
             placeholder="Email Address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-xl border border-zinc-300 px-4 py-3 outline-none focus:border-black"
+            className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-black dark:border-zinc-700 dark:bg-zinc-950 dark:text-white dark:placeholder:text-zinc-400"
           />
 
           <input
@@ -59,7 +67,7 @@ function LoginPage() {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-xl border border-zinc-300 px-4 py-3 outline-none focus:border-black"
+            className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-black dark:border-zinc-700 dark:bg-zinc-950 dark:text-white dark:placeholder:text-zinc-400"
           />
 
           <button

@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-
+import { Link } from "react-router-dom";
 import {
   removeFromCart,
   increaseQuantity,
@@ -76,6 +76,12 @@ function CartPage() {
             <h2 className="text-2xl font-bold">Total</h2>
 
             <span className="text-3xl font-bold">${totalPrice}</span>
+            <Link
+              to="/checkout"
+              className="mt-6 inline-block rounded-2xl bg-black px-8 py-4 text-lg font-semibold text-white transition hover:scale-105"
+            >
+              Proceed To Checkout
+            </Link>
           </div>
         </div>
       )}

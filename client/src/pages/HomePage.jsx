@@ -19,6 +19,8 @@ function HomePage() {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 3;
 
+  const [error, setError] = useState("");
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -26,7 +28,7 @@ function HomePage() {
 
         setProducts(data);
       } catch (error) {
-        console.log(error);
+        setError("Failed to load products");
       } finally {
         setLoading(false);
       }
@@ -85,6 +87,11 @@ function HomePage() {
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
         />
+        {error && (
+          <div className="mx-auto mb-6 max-w-7xl rounded-xl bg-red-100 p-4 text-red-600">
+            {error}
+          </div>
+        )}
 
         <FeaturedProducts
           products={currentProducts}

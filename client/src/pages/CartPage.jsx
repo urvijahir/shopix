@@ -32,7 +32,7 @@ function CartPage() {
           <div className="space-y-6">
             {cartItems.map((item) => (
               <div
-                key={item.id}
+                key={item._id}
                 className="flex flex-col gap-6 rounded-3xl bg-white p-6 shadow-sm dark:bg-zinc-900 md:flex-row md:items-center md:justify-between"
               >
                 {/* LEFT */}
@@ -57,7 +57,7 @@ function CartPage() {
                 {/* RIGHT */}
                 <div className="flex items-center gap-4">
                   <button
-                    onClick={() => dispatch(decreaseQuantity(item.id))}
+                    onClick={() => dispatch(decreaseQuantity(item._id))}
                     className="rounded-lg border border-zinc-300 px-4 py-2 text-zinc-900 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-800"
                   >
                     -
@@ -68,14 +68,14 @@ function CartPage() {
                   </span>
 
                   <button
-                    onClick={() => dispatch(increaseQuantity(item.id))}
+                    onClick={() => dispatch(increaseQuantity(item._id))}
                     className="rounded-lg border border-zinc-300 px-4 py-2 text-zinc-900 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-800"
                   >
                     +
                   </button>
 
                   <button
-                    onClick={() => dispatch(removeFromCart(item.id))}
+                    onClick={() => dispatch(removeFromCart(item._id))}
                     className="rounded-xl bg-red-500 px-4 py-2 text-white transition hover:bg-red-600"
                   >
                     Remove

@@ -55,7 +55,7 @@ function FeaturedProducts({
             <ProductSkeleton />
           </>
         ) : products.length > 0 ? (
-          products.map((item) => <ProductCard key={item.id} product={item} />)
+          products.map((item) => <ProductCard key={item._id} product={item} />)
         ) : (
           <div className="col-span-full rounded-3xl bg-white p-10 text-center shadow-sm dark:bg-zinc-900">
             <h3 className="text-2xl font-bold text-zinc-900 dark:text-white">

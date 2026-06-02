@@ -10,7 +10,7 @@ function ProductCard({ product }) {
   return (
     <div className="overflow-hidden rounded-3xl bg-white dark:bg-zinc-900 shadow-sm transition hover:-translate-y-2 hover:shadow-xl relative">
       {/* IMAGE */}
-      <Link to={`/product/${product.id}`}>
+      <Link to={`/product/${product._id}`}>
         <img
           src={product.image}
           alt={product.title}
@@ -34,7 +34,7 @@ function ProductCard({ product }) {
           </span>
 
           <Link
-            to={`/product/${product.id}`}
+            to={`/product/${product._id}`}
             className="rounded-2xl bg-black px-6 py-3 font-medium text-white transition hover:scale-105"
           >
             View

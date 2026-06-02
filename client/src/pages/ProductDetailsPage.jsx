@@ -16,11 +16,10 @@ function ProductDetailsPage() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/products");
-
-        const foundProduct = data.find((item) => item.id === Number(id));
-
-        setProduct(foundProduct);
+        const { data } = await axios.get(
+          `http://localhost:5000/api/products/${id}`,
+        );
+        setProduct(data);
       } catch (error) {
         console.log(error);
       }
@@ -31,7 +30,9 @@ function ProductDetailsPage() {
 
   if (!product) {
     return (
-      <div className="py-20 text-center text-2xl font-bold">Loading...</div>
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-zinc-300 border-t-black"></div>
+      </div>
     );
   }
   return (

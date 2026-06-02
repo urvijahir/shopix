@@ -19,8 +19,8 @@ function Navbar() {
   const { wishlistItems } = useSelector((state) => state.wishlist);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-zinc-200 bg-white  dark:bg-zinc-950 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+    <nav className="sticky top-0 z-50 w-full border-b border-zinc-200 bg-white dark:bg-zinc-950 backdrop-blur-md">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
         {/* LOGO */}
         <Link
           to="/"
@@ -30,7 +30,7 @@ function Navbar() {
         </Link>
 
         {/* NAV LINKS */}
-        <div className="flex items-center gap-6 ">
+        <div className=" flex items-center gap-5 ">
           <Link
             to="/"
             className="text-sm font-medium dark:text-zinc-200 transition hover:text-black dark:hover:text-white"
@@ -81,11 +81,20 @@ function Navbar() {
               Login
             </Link>
           )}
+          {userInfo?.email === "admin29@gmail.com" && (
+            <Link
+              to="/admin"
+              className="text-sm font-medium dark:text-zinc-200"
+            >
+              Admin
+            </Link>
+          )}
+
           <Link
-            to="/admin"
-            className="text-sm font-medium dark:text-zinc-200 transition hover:text-black dark:hover:text-white"
+            to="/orders"
+            className="text-sm font-medium text-zinc-700 transition hover:text-black dark:text-zinc-200 dark:hover:text-white"
           >
-            Admin
+            Orders
           </Link>
 
           <button

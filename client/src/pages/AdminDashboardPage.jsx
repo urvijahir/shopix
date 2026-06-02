@@ -1,9 +1,10 @@
 import { useState } from "react";
-
-import productsData from "../data/products";
+import { useEffect } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 function AdminDashboardPage() {
-  const [products, setProducts] = useState(productsData);
+  const [products, setProducts] = useState([]);
 
   const [title, setTitle] = useState("");
 
@@ -13,31 +14,67 @@ function AdminDashboardPage() {
 
   const [image, setImage] = useState("");
 
-  const addProductHandler = (e) => {
+  const [description, setDescription] = useState("");
+
+  const addProductHandler = async (e) => {
     e.preventDefault();
 
-    const newProduct = {
-      id: Date.now(),
-      title,
-      price: Number(price),
-      category,
-      image,
+    try {
+      const { data } = await axios.post("http://localhost:5000/api/products", {
+        title,
+        price,
+        category,
+        image,
+        description,
+      });
+
+      setProducts([data, ...products]);
+
+      toast.success("Product added");
+
+      setTitle("");
+
+      setPrice("");
+
+      setCategory("");
+
+      setImage("");
+
+      setDescription("");
+    } catch (error) {
+      toast.error("Failed to add product");
+
+      console.log(error);
+    }
+  };
+
+  const deleteProductHandler = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/products/${id}`);
+
+      setProducts(products.filter((item) => item._id !== id));
+
+      toast.success("Product deleted");
+    } catch (error) {
+      toast.error("Delete failed");
+
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const { data } = await axios.get("http://localhost:5000/api/products");
+
+        setProducts(data);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
-    setProducts([newProduct, ...products]);
-
-    setTitle("");
-
-    setPrice("");
-
-    setCategory("");
-
-    setImage("");
-  };
-
-  const deleteProductHandler = (id) => {
-    setProducts(products.filter((item) => item.id !== id));
-  };
+    fetchProducts();
+  }, []);
 
   return (
     <section className="min-h-screen bg-zinc-100 px-6 py-16 dark:bg-zinc-950">
@@ -74,20 +111,41 @@ function AdminDashboardPage() {
               required
             />
 
-            <input
-              type="text"
-              placeholder="Category"
+            <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               className="rounded-2xl border border-zinc-300 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
               required
-            />
+            >
+              <option value="">Select Category</option>
+
+              <option value="Fashion">Fashion</option>
+
+              <option value="Electronics">Electronics</option>
+
+              <option value="Furniture">Furniture</option>
+
+              <option value="Accessories">Accessories</option>
+
+              <option value="Beauty">Beauty</option>
+
+              <option value="Travel">Travel</option>
+            </select>
 
             <input
               type="text"
               placeholder="Image URL"
               value={image}
               onChange={(e) => setImage(e.target.value)}
+              className="rounded-2xl border border-zinc-300 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+              required
+            />
+
+            <input
+              type="text"
+              placeholder="Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               className="rounded-2xl border border-zinc-300 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
               required
             />
@@ -105,7 +163,7 @@ function AdminDashboardPage() {
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {products.map((product) => (
             <div
-              key={product.id}
+              key={product._id}
               className="overflow-hidden rounded-3xl bg-white shadow-sm dark:bg-zinc-900"
             >
               <img
@@ -128,7 +186,7 @@ function AdminDashboardPage() {
                 </p>
 
                 <button
-                  onClick={() => deleteProductHandler(product.id)}
+                  onClick={() => deleteProductHandler(product._id)}
                   className="mt-6 rounded-2xl bg-red-500 px-6 py-3 text-white transition hover:bg-red-600"
                 >
                   Delete Product

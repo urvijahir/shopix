@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import axios from "axios";
+
 import { useSelector, useDispatch } from "react-redux";
 
 import { motion } from "framer-motion";
@@ -12,6 +14,8 @@ function CheckoutPage() {
   const dispatch = useDispatch();
 
   const { cartItems } = useSelector((state) => state.cart);
+
+  const [loading, setLoading] = useState(false);
 
   const [orderPlaced, setOrderPlaced] = useState(false);
 
@@ -39,22 +43,40 @@ function CheckoutPage() {
 
   const totalPrice = subtotal + shippingPrice;
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
 
-    setOrderPlaced(true);
+    try {
+      setLoading(true);
 
-    toast.success("Order placed successfully");
+      await axios.post("http://localhost:5000/api/orders", {
+        orderItems: cartItems,
+        shippingAddress: shippingData,
+        totalPrice,
+      });
 
-    dispatch(clearCart());
+      setOrderPlaced(true);
 
-    setShippingData({
-      fullName: "",
-      address: "",
-      city: "",
-      postalCode: "",
-      country: "",
-    });
+      toast.success("Order placed successfully");
+
+      dispatch(clearCart());
+
+      setShippingData({
+        fullName: "",
+        address: "",
+        city: "",
+        postalCode: "",
+        country: "",
+      });
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+
+      toast.error("Order failed");
+
+      console.log(error);
+    }
   };
 
   return (
@@ -127,9 +149,10 @@ function CheckoutPage() {
 
               <button
                 type="submit"
-                className="w-full rounded-2xl bg-black py-4 text-lg font-semibold text-white transition hover:scale-[1.01]"
+                disabled={loading}
+                className="w-full rounded-2xl bg-black py-4 text-lg font-semibold text-white"
               >
-                Place Order
+                {loading ? "Placing Order..." : "Place Order"}
               </button>
             </form>
 
@@ -167,7 +190,7 @@ function CheckoutPage() {
             <div className="space-y-5">
               {cartItems.map((item) => (
                 <div
-                  key={item.id}
+                  key={item._id || item.id}
                   className="flex items-center justify-between"
                 >
                   <div>

@@ -6,6 +6,8 @@ import toast from "react-hot-toast";
 
 import { useNavigate } from "react-router-dom";
 
+import { BASE_URL } from "../config";
+
 function RegisterPage() {
   const [name, setName] = useState("");
 
@@ -21,7 +23,7 @@ function RegisterPage() {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/api/users", {
+      await axios.post(`${BASE_URL}/api/users`, {
         name,
         email,
         password,

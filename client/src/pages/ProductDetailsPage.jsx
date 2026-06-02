@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
 import toast from "react-hot-toast";
 import ProductReviews from "../components/product/ProductReviews";
-
+import { BASE_URL } from "../config";
 function ProductDetailsPage() {
   const { id } = useParams();
 
@@ -16,9 +16,7 @@ function ProductDetailsPage() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const { data } = await axios.get(
-          `http://localhost:5000/api/products/${id}`,
-        );
+        const { data } = await axios.get(`${BASE_URL}/api/products/${id}`);
         setProduct(data);
       } catch (error) {
         console.log(error);

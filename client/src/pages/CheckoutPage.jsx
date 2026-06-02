@@ -2,6 +2,8 @@ import { useState } from "react";
 
 import axios from "axios";
 
+import { BASE_URL } from "../config";
+
 import { useSelector, useDispatch } from "react-redux";
 
 import { motion } from "framer-motion";
@@ -49,7 +51,7 @@ function CheckoutPage() {
     try {
       setLoading(true);
 
-      await axios.post("http://localhost:5000/api/orders", {
+      await axios.post(`${BASE_URL}/api/orders`, {
         orderItems: cartItems,
         shippingAddress: shippingData,
         totalPrice,

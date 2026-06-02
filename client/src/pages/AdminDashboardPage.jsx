@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { BASE_URL } from "../config";
 
 function AdminDashboardPage() {
   const [products, setProducts] = useState([]);
@@ -20,7 +21,7 @@ function AdminDashboardPage() {
     e.preventDefault();
 
     try {
-      const { data } = await axios.post("http://localhost:5000/api/products", {
+      const { data } = await axios.post(`${BASE_URL}/api/products`, {
         title,
         price,
         category,
@@ -50,7 +51,7 @@ function AdminDashboardPage() {
 
   const deleteProductHandler = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/products/${id}`);
+      await axios.delete(`${BASE_URL}/api/products/${id}`);
 
       setProducts(products.filter((item) => item._id !== id));
 
@@ -65,7 +66,7 @@ function AdminDashboardPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/products");
+        const { data } = await axios.get(`${BASE_URL}/api/products`);
 
         setProducts(data);
       } catch (error) {

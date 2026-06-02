@@ -5,6 +5,8 @@ import HeroSection from "../components/home/HeroSection";
 import FeaturedProducts from "../components/product/FeaturedProducts";
 import CategorySection from "../components/category/CategorySection";
 
+import { BASE_URL } from "../config";
+
 function HomePage() {
   const [products, setProducts] = useState([]);
 
@@ -24,7 +26,7 @@ function HomePage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/products");
+        const { data } = await axios.get(`${BASE_URL}/api/products`);
 
         setProducts(data);
       } catch (error) {

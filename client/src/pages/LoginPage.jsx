@@ -10,6 +10,8 @@ import toast from "react-hot-toast";
 
 import { useNavigate } from "react-router-dom";
 
+import { BASE_URL } from "../config";
+
 function LoginPage() {
   const [email, setEmail] = useState("");
 
@@ -26,13 +28,10 @@ function LoginPage() {
 
     try {
       setLoading(true);
-      const { data } = await axios.post(
-        "http://localhost:5000/api/users/login",
-        {
-          email,
-          password,
-        },
-      );
+      const { data } = await axios.post(`${BASE_URL}/api/users/login`, {
+        email,
+        password,
+      });
 
       dispatch(setCredentials(data));
 

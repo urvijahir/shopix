@@ -89,9 +89,15 @@ function Navbar() {
 
             {userInfo ? (
               <>
-                <span className="font-semibold dark:text-zinc-200">
-                  {userInfo.name}
-                </span>
+                <div className="flex items-center gap-2">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-black text-sm font-bold text-white dark:bg-white dark:text-black">
+                    {userInfo.name.charAt(0).toUpperCase()}
+                  </div>
+
+                  <span className="font-semibold dark:text-zinc-200">
+                    {userInfo.name}
+                  </span>
+                </div>
 
                 <button
                   onClick={logoutHandler}
@@ -172,13 +178,25 @@ function Navbar() {
 
             {userInfo ? (
               <>
-                <span className="font-semibold dark:text-white">
-                  {userInfo.name}
-                </span>
+                <div className="mt-2 flex items-center gap-3 rounded-2xl bg-zinc-100 p-4 dark:bg-zinc-900">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-black text-lg font-bold text-white dark:bg-white dark:text-black">
+                    {userInfo.name.charAt(0).toUpperCase()}
+                  </div>
+
+                  <div>
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                      Welcome back
+                    </p>
+
+                    <p className="font-semibold text-zinc-900 dark:text-white">
+                      {userInfo.name}
+                    </p>
+                  </div>
+                </div>
 
                 <button
                   onClick={logoutHandler}
-                  className="rounded-xl bg-black px-5 py-2 text-white"
+                  className="rounded-xl bg-black px-5 py-3 text-white dark:bg-white dark:text-black"
                 >
                   Logout
                 </button>

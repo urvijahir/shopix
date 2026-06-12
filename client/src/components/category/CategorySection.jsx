@@ -10,7 +10,7 @@ function CategorySection({ selectedCategory, setSelectedCategory }) {
   ];
 
   return (
-    <section className="bg-white px-6 py-10 dark:bg-zinc-950">
+    <section className="px-6 py-8">
       <div className="mx-auto max-w-7xl">
         <h2 className="mb-8 text-3xl font-bold text-zinc-900 dark:text-white">
           Shop By Category
@@ -25,7 +25,7 @@ function CategorySection({ selectedCategory, setSelectedCategory }) {
               ${
                 selectedCategory === category
                   ? "bg-black text-white"
-                  : "bg-white text-zinc-900 shadow-sm hover:-translate-y-1 hover:shadow-md dark:bg-zinc-900 dark:text-white"
+                  : "bg-zinc-100 text-zinc-900 hover:bg-zinc-400 dark:bg-zinc-900 dark:text-white"
               }`}
             >
               {category}

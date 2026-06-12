@@ -48,7 +48,7 @@ function ProductDetailsPage() {
           {product.category}
         </p>
 
-        <h1 className="mt-3 text-5xl font-bold text-zinc-900 dark:text-white">
+        <h1 className="mt-3 text-3xl font-bold md:text-5xl text-zinc-900 dark:text-white">
           {product.title}
         </h1>
 
@@ -56,7 +56,9 @@ function ProductDetailsPage() {
           Premium quality product designed for modern lifestyle and comfort.
         </p>
 
-        <div className="mt-8 flex items-center gap-6">
+        <p className="font-medium text-green-600">✓ In Stock</p>
+
+        <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
           <span className="text-4xl font-bold text-zinc-900 dark:text-white">
             ${product.price}
           </span>

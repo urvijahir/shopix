@@ -8,7 +8,7 @@ function HeroSection() {
             Modern Ecommerce
           </p>
 
-          <h1 className="mt-6 text-5xl font-bold leading-tight text-zinc-900  dark:text-white md:text-6xl">
+          <h1 className="mt-6 text-4xl me:text-6xl font-bold leading-tight text-zinc-900  dark:text-white md:text-6xl">
             Discover Premium Products For Your Lifestyle
           </h1>
 
@@ -17,7 +17,7 @@ function HeroSection() {
             essentials with smooth shopping experience.
           </p>
 
-          <div className="mt-10 flex gap-4">
+          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
             <button className="rounded-2xl bg-black dark:bg-white px-8 py-4 font-medium text-white dark:text-black transition hover:scale-105">
               Shop Now
             </button>

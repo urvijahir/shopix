@@ -13,7 +13,7 @@ function FeaturedProducts({
   totalPages,
 }) {
   return (
-    <section className="mx-auto max-w-7xl bg-white px-6 py-20 dark:bg-zinc-950">
+    <section className="mx-auto max-w-7xl px-6 py-12">
       <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="text-sm font-semibold uppercase tracking-wide text-blue-600">
@@ -35,7 +35,7 @@ function FeaturedProducts({
         <select
           value={sortOption}
           onChange={(e) => setSortOption(e.target.value)}
-          className="rounded-xl border border-zinc-300 bg-white px-4 py-3 outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
+          className="w-full md:w-auto rounded-xl border border-zinc-300 bg-white px-4 py-3 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
         >
           <option value="default">Sort Products</option>
 
@@ -68,10 +68,10 @@ function FeaturedProducts({
           </div>
         )}
       </div>
-      <div className="mt-12 flex items-center justify-center gap-4">
+      <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
         <button
           onClick={() => setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev))}
-          className="rounded-xl bg-black px-5 py-3 text-white"
+          className="rounded-xl bg-black dark:bg-white px-5 py-3 text-white dark:text-black"
         >
           Previous
         </button>
@@ -94,7 +94,7 @@ function FeaturedProducts({
           onClick={() =>
             setCurrentPage((prev) => (prev < totalPages ? prev + 1 : prev))
           }
-          className="rounded-xl bg-black px-5 py-3 text-white"
+          className="rounded-xl bg-black dark:bg-white px-5 py-3 text-white dark:text-black"
         >
           Next
         </button>

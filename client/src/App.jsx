@@ -13,10 +13,11 @@ import WishlistPage from "./pages/WishlistPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import OrdersPage from "./pages/OrdersPage";
 import AdminRoute from "./components/AdminRoute";
+import Footer from "./components/layout/Footer";
 
 function App() {
   return (
-    <div className="min-h-screen bg-zinc-50">
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 overflow-x-hidden">
       <Navbar />
 
       <Routes>
@@ -37,6 +38,7 @@ function App() {
           <Route path="/admin" element={<AdminDashboardPage />} />
         </Route>
       </Routes>
+      <Footer />
     </div>
   );
 }

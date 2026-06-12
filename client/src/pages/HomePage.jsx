@@ -4,6 +4,7 @@ import axios from "axios";
 import HeroSection from "../components/home/HeroSection";
 import FeaturedProducts from "../components/product/FeaturedProducts";
 import CategorySection from "../components/category/CategorySection";
+import Features from "../components/home/Features";
 
 import { BASE_URL } from "../config";
 
@@ -82,8 +83,10 @@ function HomePage() {
 
   return (
     <>
-      <div className="bg-white dark:bg-zinc-950 min-h-screen">
+      <div className="min-h-screen bg-white dark:bg-zinc-950">
         <HeroSection />
+
+        <Features />
 
         <CategorySection
           selectedCategory={selectedCategory}

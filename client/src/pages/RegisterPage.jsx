@@ -36,6 +36,9 @@ function RegisterPage() {
       toast.error("Registration failed");
 
       console.log(error);
+      e.status(500).json({
+        message: error.message,
+      });
     }
   };
 

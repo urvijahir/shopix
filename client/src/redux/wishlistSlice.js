@@ -17,7 +17,7 @@ const wishlistSlice = createSlice({
     addToWishlist: (state, action) => {
       const item = action.payload;
 
-      const existItem = state.wishlistItems.find((x) => x.id === item._id);
+      const existItem = state.wishlistItems.find((x) => x._id === item._id);
 
       if (!existItem) {
         state.wishlistItems.push(item);

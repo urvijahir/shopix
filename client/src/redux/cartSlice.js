@@ -1,7 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const cartItemsFromStorage = localStorage.getItem("cartItems")
+  ? JSON.parse(localStorage.getItem("cartItems"))
+  : [];
+
 const initialState = {
-  cartItems: [],
+  cartItems: cartItemsFromStorage,
+};
+
+const isSameCartItem = (item, payload) =>
+  item._id === payload._id &&
+  item.selectedColor === payload.selectedColor &&
+  item.selectedSize === payload.selectedSize;
+
+const saveCart = (cartItems) => {
+  localStorage.setItem("cartItems", JSON.stringify(cartItems));
 };
 
 const cartSlice = createSlice({
@@ -13,49 +26,51 @@ const cartSlice = createSlice({
     addToCart: (state, action) => {
       const item = action.payload;
 
-      const existingItem = state.cartItems.find(
-        (product) => product._id === item._id,
-      );
+      const existItem = state.cartItems.find((x) => isSameCartItem(x, item));
 
-      if (existingItem) {
-        existingItem.quantity += 1;
+      if (existItem) {
+        existItem.quantity += item.quantity;
       } else {
-        state.cartItems.push({
-          ...item,
-          quantity: 1,
-        });
+        state.cartItems.push(item);
       }
+
+      saveCart(state.cartItems);
     },
 
     removeFromCart: (state, action) => {
       state.cartItems = state.cartItems.filter(
-        (item) => item._id !== action.payload,
+        (item) => !isSameCartItem(item, action.payload),
       );
+
+      saveCart(state.cartItems);
     },
 
     increaseQuantity: (state, action) => {
-      const item = state.cartItems.find(
-        (product) => product._id === action.payload,
+      const item = state.cartItems.find((x) =>
+        isSameCartItem(x, action.payload),
       );
 
       if (item) {
         item.quantity += 1;
       }
+
+      saveCart(state.cartItems);
     },
 
     decreaseQuantity: (state, action) => {
-      const item = state.cartItems.find(
-        (product) => product._id === action.payload,
+      const item = state.cartItems.find((x) =>
+        isSameCartItem(x, action.payload),
       );
 
       if (item && item.quantity > 1) {
         item.quantity -= 1;
       }
+
+      saveCart(state.cartItems);
     },
 
     clearCart: (state) => {
       state.cartItems = [];
-
       localStorage.removeItem("cartItems");
     },
   },

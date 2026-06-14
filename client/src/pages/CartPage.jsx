@@ -17,6 +17,12 @@ function CartPage() {
     0,
   );
 
+  const getCartPayload = (item) => ({
+    _id: item._id,
+    selectedColor: item.selectedColor,
+    selectedSize: item.selectedSize,
+  });
+
   return (
     <section className="min-h-screen bg-white dark:bg-zinc-950">
       <div className="mx-auto max-w-7xl px-6 py-16">
@@ -32,10 +38,11 @@ function CartPage() {
           <div className="space-y-6">
             {cartItems.map((item) => (
               <div
-                key={item._id}
+                key={`${item._id}-${item.selectedColor || "no-color"}-${
+                  item.selectedSize || "no-size"
+                }`}
                 className="flex flex-col gap-6 rounded-3xl bg-white p-6 shadow-sm dark:bg-zinc-900 md:flex-row md:items-center md:justify-between"
               >
-                {/* LEFT */}
                 <div className="flex items-center gap-5">
                   <img
                     src={item.image}
@@ -51,13 +58,26 @@ function CartPage() {
                     <p className="mt-1 text-zinc-500 dark:text-zinc-400">
                       ${item.price}
                     </p>
+
+                    {item.selectedColor && (
+                      <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                        Color: {item.selectedColor}
+                      </p>
+                    )}
+
+                    {item.selectedSize && (
+                      <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                        Size: {item.selectedSize}
+                      </p>
+                    )}
                   </div>
                 </div>
 
-                {/* RIGHT */}
                 <div className="flex items-center gap-4">
                   <button
-                    onClick={() => dispatch(decreaseQuantity(item._id))}
+                    onClick={() =>
+                      dispatch(decreaseQuantity(getCartPayload(item)))
+                    }
                     className="rounded-lg border border-zinc-300 px-4 py-2 text-zinc-900 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-800"
                   >
                     -
@@ -68,14 +88,18 @@ function CartPage() {
                   </span>
 
                   <button
-                    onClick={() => dispatch(increaseQuantity(item._id))}
+                    onClick={() =>
+                      dispatch(increaseQuantity(getCartPayload(item)))
+                    }
                     className="rounded-lg border border-zinc-300 px-4 py-2 text-zinc-900 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-800"
                   >
                     +
                   </button>
 
                   <button
-                    onClick={() => dispatch(removeFromCart(item._id))}
+                    onClick={() =>
+                      dispatch(removeFromCart(getCartPayload(item)))
+                    }
                     className="rounded-xl bg-red-500 px-4 py-2 text-white transition hover:bg-red-600"
                   >
                     Remove
@@ -84,7 +108,6 @@ function CartPage() {
               </div>
             ))}
 
-            {/* TOTAL */}
             <div className="mt-10 rounded-3xl bg-black p-6 text-white">
               <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                 <div>

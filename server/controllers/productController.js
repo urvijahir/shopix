@@ -35,7 +35,17 @@ const getProductById = async (req, res) => {
 // CREATE PRODUCT
 const createProduct = async (req, res) => {
   try {
-    const { title, price, category, image, description } = req.body;
+    const {
+      title,
+      price,
+      category,
+      image,
+      description,
+      colors,
+      colorImages,
+      sizes,
+      stock,
+    } = req.body;
 
     const product = new Product({
       title,
@@ -43,6 +53,10 @@ const createProduct = async (req, res) => {
       category,
       image,
       description,
+      colors,
+      colorImages,
+      sizes,
+      stock,
     });
 
     const createdProduct = await product.save();

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { addToWishlist } from "../../redux/wishlistSlice";
 
@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 
 function ProductCard({ product }) {
   const dispatch = useDispatch();
+  const { wishlistItems } = useSelector((state) => state.wishlist);
   return (
     <div className="overflow-hidden rounded-3xl bg-white shadow-sm transition duration-300 hover:-translate-y-2 hover:shadow-xls dark:bg-zinc-900">
       {/* IMAGE */}
@@ -44,6 +45,14 @@ function ProductCard({ product }) {
 
           <button
             onClick={() => {
+              const alreadyExists = wishlistItems.some(
+                (item) => item._id === product._id,
+              );
+
+              if (alreadyExists) {
+                toast.error("Already in wishlist");
+                return;
+              }
               dispatch(addToWishlist(product));
 
               toast.success("Added to wishlist");

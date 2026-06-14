@@ -35,10 +35,18 @@ function ProductDetailsPage() {
         const { data } = await axios.get(`${BASE_URL}/api/products/${id}`);
 
         setProduct(data);
-        setDisplayImage(data.image);
 
-        if (data.colors?.length > 0) {
-          setSelectedColor(data.colors[0]);
+        const firstColorImage = data.colorImages?.[0];
+
+        if (firstColorImage) {
+          setDisplayImage(firstColorImage.image);
+          setSelectedColor(firstColorImage.color);
+        } else {
+          setDisplayImage(data.image);
+
+          if (data.colors?.length > 0) {
+            setSelectedColor(data.colors[0]);
+          }
         }
 
         if (data.sizes?.length > 0) {
@@ -150,7 +158,10 @@ function ProductDetailsPage() {
               </h3>
 
               <div className="flex flex-wrap gap-3">
-                {product.colors.map((color) => (
+                {(product.colorImages?.length > 0
+                  ? product.colorImages.map((item) => item.color)
+                  : product.colors
+                ).map((color) => (
                   <button
                     key={color}
                     onClick={() => {
@@ -158,7 +169,8 @@ function ProductDetailsPage() {
 
                       const matchedImage = product.colorImages?.find(
                         (item) =>
-                          item.color.toLowerCase() === color.toLowerCase(),
+                          item.color.trim().toLowerCase() ===
+                          color.trim().toLowerCase(),
                       );
 
                       setDisplayImage(matchedImage?.image || product.image);

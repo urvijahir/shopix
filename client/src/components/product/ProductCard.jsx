@@ -35,7 +35,7 @@ function ProductCard({ product }) {
 
       <Link to={`/product/${product._id}`}>
         <img
-          src={product.image}
+          src={product.colorImages?.[0]?.image || product.image}
           alt={product.title}
           className="h-64 w-full object-cover transition duration-300 hover:scale-105"
         />

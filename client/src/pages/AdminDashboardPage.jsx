@@ -6,6 +6,8 @@ import { BASE_URL } from "../config";
 function AdminDashboardPage() {
   const [products, setProducts] = useState([]);
 
+  const [editingProductId, setEditingProductId] = useState(null);
+
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
@@ -16,6 +18,19 @@ function AdminDashboardPage() {
   const [stock, setStock] = useState("");
 
   const [colorImages, setColorImages] = useState([{ color: "", image: "" }]);
+
+  const resetForm = () => {
+    setEditingProductId(null);
+    setTitle("");
+    setPrice("");
+    setCategory("");
+    setImage("");
+    setDescription("");
+    setColors("");
+    setSizes("");
+    setStock("");
+    setColorImages([{ color: "", image: "" }]);
+  };
 
   const addColorImageField = () => {
     setColorImages([...colorImages, { color: "", image: "" }]);
@@ -31,9 +46,7 @@ function AdminDashboardPage() {
     setColorImages(colorImages.filter((_, i) => i !== index));
   };
 
-  const addProductHandler = async (e) => {
-    e.preventDefault();
-
+  const getFormData = () => {
     const colorArray = colors
       .split(",")
       .map((color) => color.trim())
@@ -48,41 +61,84 @@ function AdminDashboardPage() {
       (item) => item.color.trim() !== "" && item.image.trim() !== "",
     );
 
+    return {
+      title,
+      price: Number(price),
+      category,
+      image,
+      description,
+      colors: colorArray,
+      sizes: sizeArray,
+      stock: Number(stock),
+      colorImages: validColorImages,
+    };
+  };
+
+  const submitProductHandler = async (e) => {
+    e.preventDefault();
+
     try {
-      const { data } = await axios.post(`${BASE_URL}/api/products`, {
-        title,
-        price: Number(price),
-        category,
-        image,
-        description,
-        colors: colorArray,
-        sizes: sizeArray,
-        stock: Number(stock),
-        colorImages: validColorImages,
-      });
+      if (editingProductId) {
+        const { data } = await axios.put(
+          `${BASE_URL}/api/products/${editingProductId}`,
+          getFormData(),
+        );
 
-      setProducts([data, ...products]);
-      toast.success("Product added");
+        setProducts(
+          products.map((product) =>
+            product._id === editingProductId ? data : product,
+          ),
+        );
 
-      setTitle("");
-      setPrice("");
-      setCategory("");
-      setImage("");
-      setDescription("");
-      setColors("");
-      setSizes("");
-      setStock("");
-      setColorImages([{ color: "", image: "" }]);
+        toast.success("Product updated");
+      } else {
+        const { data } = await axios.post(
+          `${BASE_URL}/api/products`,
+          getFormData(),
+        );
+
+        setProducts([data, ...products]);
+
+        toast.success("Product added");
+      }
+
+      resetForm();
     } catch (error) {
-      toast.error("Failed to add product");
+      toast.error(editingProductId ? "Update failed" : "Failed to add product");
       console.log(error);
     }
+  };
+
+  const editProductHandler = (product) => {
+    setEditingProductId(product._id);
+
+    setTitle(product.title || "");
+    setPrice(product.price || "");
+    setCategory(product.category || "");
+    setImage(product.image || "");
+    setDescription(product.description || "");
+    setColors(product.colors?.join(", ") || "");
+    setSizes(product.sizes?.join(", ") || "");
+    setStock(product.stock || "");
+
+    setColorImages(
+      product.colorImages?.length > 0
+        ? product.colorImages
+        : [{ color: "", image: "" }],
+    );
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   const deleteProductHandler = async (id) => {
     try {
       await axios.delete(`${BASE_URL}/api/products/${id}`);
+
       setProducts(products.filter((item) => item._id !== id));
+
       toast.success("Product deleted");
     } catch (error) {
       toast.error("Delete failed");
@@ -112,11 +168,11 @@ function AdminDashboardPage() {
 
         <div className="mb-12 rounded-3xl bg-white p-5 shadow-sm dark:bg-zinc-900 sm:p-8">
           <h2 className="mb-6 text-2xl font-bold text-zinc-900 dark:text-white sm:text-3xl">
-            Add Product
+            {editingProductId ? "Edit Product" : "Add Product"}
           </h2>
 
           <form
-            onSubmit={addProductHandler}
+            onSubmit={submitProductHandler}
             className="grid gap-5 md:grid-cols-2"
           >
             <input
@@ -248,12 +304,24 @@ function AdminDashboardPage() {
               </button>
             </div>
 
-            <button
-              type="submit"
-              className="rounded-2xl bg-black px-8 py-4 font-semibold text-white transition hover:scale-105 dark:bg-white dark:text-black"
-            >
-              Add Product
-            </button>
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <button
+                type="submit"
+                className="rounded-2xl bg-black px-8 py-4 font-semibold text-white transition hover:scale-105 dark:bg-white dark:text-black"
+              >
+                {editingProductId ? "Update Product" : "Add Product"}
+              </button>
+
+              {editingProductId && (
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  className="rounded-2xl border border-zinc-300 px-8 py-4 font-semibold text-zinc-900 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-800"
+                >
+                  Cancel Edit
+                </button>
+              )}
+            </div>
           </form>
         </div>
 
@@ -286,9 +354,13 @@ function AdminDashboardPage() {
                   Stock: {product.stock ?? 0}
                 </p>
 
-                {product.colors?.length > 0 && (
+                {(product.colorImages?.length > 0 ||
+                  product.colors?.length > 0) && (
                   <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
-                    Colors: {product.colors.join(", ")}
+                    Colors:{" "}
+                    {product.colorImages?.length > 0
+                      ? product.colorImages.map((item) => item.color).join(", ")
+                      : product.colors.join(", ")}
                   </p>
                 )}
 
@@ -304,12 +376,21 @@ function AdminDashboardPage() {
                   </p>
                 )}
 
-                <button
-                  onClick={() => deleteProductHandler(product._id)}
-                  className="mt-6 rounded-2xl bg-red-500 px-6 py-3 text-white transition hover:bg-red-600"
-                >
-                  Delete Product
-                </button>
+                <div className="mt-6 flex gap-3">
+                  <button
+                    onClick={() => editProductHandler(product)}
+                    className="rounded-2xl bg-black px-5 py-3 text-white transition hover:opacity-90 dark:bg-white dark:text-black"
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    onClick={() => deleteProductHandler(product._id)}
+                    className="rounded-2xl bg-red-500 px-5 py-3 text-white transition hover:bg-red-600"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           ))}

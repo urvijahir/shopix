@@ -1,58 +1,71 @@
 import { useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { BASE_URL } from "../../config";
 
-function ProductReviews() {
-  const [reviews, setReviews] = useState([
-    {
-      id: 1,
-      name: "John",
-      rating: 5,
-      comment: "Amazing quality product!",
-    },
-
-    {
-      id: 2,
-      name: "Sarah",
-      rating: 4,
-      comment: "Very stylish and premium.",
-    },
-  ]);
-
+function ProductReviews({ product, setProduct }) {
   const [name, setName] = useState("");
-
   const [comment, setComment] = useState("");
-
   const [rating, setRating] = useState(5);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
 
-    const newReview = {
-      id: Date.now(),
-      name,
-      rating,
-      comment,
-    };
+    try {
+      const { data } = await axios.post(
+        `${BASE_URL}/api/products/${product._id}/reviews`,
+        {
+          name,
+          rating,
+          comment,
+        },
+      );
 
-    setReviews([newReview, ...reviews]);
+      setProduct({
+        ...product,
+        reviews: data.reviews,
+        rating: data.rating,
+        numReviews: data.numReviews,
+      });
 
-    setName("");
+      toast.success("Review submitted");
 
-    setComment("");
-
-    setRating(5);
+      setName("");
+      setComment("");
+      setRating(5);
+    } catch (error) {
+      toast.error("Review failed");
+      console.log(error);
+    }
   };
 
   return (
     <div className="mt-20">
-      {/* TITLE */}
-      <h2 className="mb-8 text-4xl font-bold text-zinc-900 dark:text-white">
-        Customer Reviews
-      </h2>
+      <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-wide text-blue-600">
+            Reviews
+          </p>
 
-      {/* FORM */}
+          <h2 className="mt-2 text-3xl font-bold text-zinc-900 dark:text-white sm:text-4xl">
+            Customer Reviews
+          </h2>
+        </div>
+
+        <div className="rounded-2xl bg-yellow-50 px-5 py-3 text-zinc-900">
+          <span className="font-bold text-yellow-500">
+            ⭐ {product.rating?.toFixed(1) || 0}
+          </span>
+
+          <span className="ml-2 text-sm text-zinc-600">
+            ({product.numReviews || 0} reviews)
+          </span>
+        </div>
+      </div>
+
       <form
         onSubmit={submitHandler}
-        className="mb-10 rounded-3xl bg-white p-8 shadow-sm dark:bg-zinc-900"
+        className="mb-10 rounded-3xl bg-white p-5 shadow-sm dark:bg-zinc-900 sm:p-8"
       >
         <div className="space-y-5">
           <input
@@ -87,35 +100,40 @@ function ProductReviews() {
 
           <button
             type="submit"
-            className="rounded-2xl bg-black px-8 py-4 font-semibold text-white transition hover:scale-105"
+            className="rounded-2xl bg-black px-8 py-4 font-semibold text-white transition hover:scale-105 dark:bg-white dark:text-black"
           >
             Submit Review
           </button>
         </div>
       </form>
 
-      {/* REVIEWS */}
       <div className="space-y-6">
-        {reviews.map((review) => (
-          <div
-            key={review.id}
-            className="rounded-3xl bg-white p-6 shadow-sm dark:bg-zinc-900"
-          >
-            <div className="flex items-center justify-between">
-              <h3 className="text-xl font-bold text-zinc-900 dark:text-white">
-                {review.name}
-              </h3>
+        {product.reviews?.length > 0 ? (
+          product.reviews.map((review) => (
+            <div
+              key={review._id || review.createdAt}
+              className="rounded-3xl bg-white p-6 shadow-sm dark:bg-zinc-900"
+            >
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <h3 className="text-xl font-bold text-zinc-900 dark:text-white">
+                  {review.name}
+                </h3>
 
-              <span className="text-yellow-500">
-                {"⭐".repeat(review.rating)}
-              </span>
+                <span className="text-yellow-500">
+                  {"⭐".repeat(review.rating)}
+                </span>
+              </div>
+
+              <p className="mt-4 text-zinc-600 dark:text-zinc-300">
+                {review.comment}
+              </p>
             </div>
-
-            <p className="mt-4 text-zinc-600 dark:text-zinc-300">
-              {review.comment}
-            </p>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p className="rounded-3xl bg-white p-6 text-zinc-500 dark:bg-zinc-900">
+            No reviews yet.
+          </p>
+        )}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 
 import {
   getProducts,
@@ -6,6 +6,7 @@ import {
   deleteProduct,
   updateProduct,
   getProductById,
+  createProductReview,
 } from "../controllers/productController.js";
 
 const router = express.Router();
@@ -17,5 +18,7 @@ router
   .get(getProductById)
   .put(updateProduct)
   .delete(deleteProduct);
+
+router.post("/:id/reviews", createProductReview);
 
 export default router;

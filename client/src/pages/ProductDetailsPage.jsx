@@ -257,7 +257,7 @@ function ProductDetailsPage() {
       )}
 
       <div className="mx-auto max-w-7xl">
-        <ProductReviews />
+        <ProductReviews product={product} setProduct={setProduct} />
       </div>
     </section>
   );

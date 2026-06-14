@@ -123,10 +123,49 @@ const updateProduct = async (req, res) => {
   }
 };
 
+//PRODUCT REVIEW
+const createProductReview = async (req, res) => {
+  try {
+    const { name, rating, comment } = req.body;
+
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    const review = {
+      name,
+      rating: Number(rating),
+      comment,
+    };
+
+    product.reviews.push(review);
+
+    product.numReviews = product.reviews.length;
+
+    product.rating =
+      product.reviews.reduce((acc, item) => acc + item.rating, 0) /
+      product.reviews.length;
+
+    await product.save();
+
+    res.status(201).json({
+      message: "Review added",
+      reviews: product.reviews,
+      rating: product.rating,
+      numReviews: product.numReviews,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export {
   getProducts,
   getProductById,
   createProduct,
   deleteProduct,
   updateProduct,
+  createProductReview,
 };

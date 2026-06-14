@@ -48,6 +48,28 @@ const productSchema = mongoose.Schema(
         image: String,
       },
     ],
+
+    reviews: [
+      {
+        name: String,
+        rating: Number,
+        comment: String,
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+
+    rating: {
+      type: Number,
+      default: 0,
+    },
+
+    numReviews: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,

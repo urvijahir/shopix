@@ -1,10 +1,11 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
 import toast from "react-hot-toast";
 import ProductReviews from "../components/product/ProductReviews";
+import ProductCard from "../components/product/ProductCard";
 import { BASE_URL } from "../config";
 import { addToWishlist } from "../redux/wishlistSlice";
 import { FaHeart } from "react-icons/fa";
@@ -13,15 +14,26 @@ function ProductDetailsPage() {
   const { id } = useParams();
   const dispatch = useDispatch();
 
+  const { wishlistItems } = useSelector((state) => state.wishlist);
+
   const [product, setProduct] = useState(null);
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
   const [displayImage, setDisplayImage] = useState("");
-  const { wishlistItems } = useSelector((state) => state.wishlist);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
+        setProduct(null);
+        setRelatedProducts([]);
+        setSelectedColor("");
+        setSelectedSize("");
+        setDisplayImage("");
+        window.scrollTo(0, 0);
+
         const { data } = await axios.get(`${BASE_URL}/api/products/${id}`);
+
         setProduct(data);
         setDisplayImage(data.image);
 
@@ -32,6 +44,16 @@ function ProductDetailsPage() {
         if (data.sizes?.length > 0) {
           setSelectedSize(data.sizes[0]);
         }
+
+        const allProductsRes = await axios.get(`${BASE_URL}/api/products`);
+
+        const related = allProductsRes.data
+          .filter(
+            (item) => item.category === data.category && item._id !== data._id,
+          )
+          .slice(0, 4);
+
+        setRelatedProducts(related);
       } catch (error) {
         console.log(error);
       }
@@ -64,6 +86,20 @@ function ProductDetailsPage() {
     toast.success("Product added to cart");
   };
 
+  const addToWishlistHandler = () => {
+    const alreadyExists = wishlistItems.some(
+      (item) => item._id === product._id,
+    );
+
+    if (alreadyExists) {
+      toast("Already in wishlist");
+      return;
+    }
+
+    dispatch(addToWishlist(product));
+    toast.success("Added to wishlist");
+  };
+
   if (!product) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
@@ -93,7 +129,8 @@ function ProductDetailsPage() {
           </h1>
 
           <p className="mt-6 text-lg leading-8 text-zinc-600 dark:text-zinc-300">
-            Premium quality product designed for modern lifestyle and comfort.
+            {product.description ||
+              "Premium quality product designed for modern lifestyle and comfort."}
           </p>
 
           <div className="mt-4">
@@ -177,19 +214,7 @@ function ProductDetailsPage() {
             </button>
 
             <button
-              onClick={() => {
-                const alreadyExists = wishlistItems.some(
-                  (item) => item._id === product._id,
-                );
-
-                if (alreadyExists) {
-                  toast("Already in wishlist");
-                  return;
-                }
-
-                dispatch(addToWishlist(product));
-                toast.success("Added to wishlist");
-              }}
+              onClick={addToWishlistHandler}
               className="flex items-center gap-2 rounded-xl border border-zinc-300 px-6 py-3 font-medium text-zinc-900 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-800"
             >
               <FaHeart className="text-red-500" />
@@ -198,6 +223,26 @@ function ProductDetailsPage() {
           </div>
         </div>
       </div>
+
+      {relatedProducts.length > 0 && (
+        <div className="mx-auto mt-20 max-w-7xl">
+          <div className="mb-8">
+            <p className="text-sm font-semibold uppercase tracking-wide text-blue-600">
+              Related Products
+            </p>
+
+            <h2 className="mt-2 text-3xl font-bold text-zinc-900 dark:text-white">
+              You may also like
+            </h2>
+          </div>
+
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {relatedProducts.map((item) => (
+              <ProductCard key={item._id} product={item} />
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="mx-auto max-w-7xl">
         <ProductReviews />

@@ -14,6 +14,7 @@ import AdminDashboardPage from "./pages/AdminDashboardPage";
 import OrdersPage from "./pages/OrdersPage";
 import AdminRoute from "./components/AdminRoute";
 import Footer from "./components/layout/Footer";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/wishlist" element={<WishlistPage />} />
           <Route path="/orders" element={<OrdersPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Route>
 
         <Route path="/product/:id" element={<ProductDetailsPage />} />

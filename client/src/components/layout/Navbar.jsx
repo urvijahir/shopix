@@ -89,7 +89,10 @@ function Navbar() {
 
             {userInfo ? (
               <>
-                <div className="flex items-center gap-2">
+                <Link
+                  to="/profile"
+                  className="flex items-center gap-2 rounded-xl px-3 py-2 transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                >
                   <div className="flex h-9 w-9 items-center justify-center rounded-full bg-black text-sm font-bold text-white dark:bg-white dark:text-black">
                     {userInfo.name.charAt(0).toUpperCase()}
                   </div>
@@ -97,7 +100,7 @@ function Navbar() {
                   <span className="font-semibold dark:text-zinc-200">
                     {userInfo.name}
                   </span>
-                </div>
+                </Link>
 
                 <button
                   onClick={logoutHandler}
@@ -178,21 +181,25 @@ function Navbar() {
 
             {userInfo ? (
               <>
-                <div className="mt-2 flex items-center gap-3 rounded-2xl bg-zinc-100 p-4 dark:bg-zinc-900">
+                <Link
+                  to="/profile"
+                  onClick={() => setIsOpen(false)}
+                  className="mt-2 flex items-center gap-3 rounded-2xl bg-zinc-100 p-4 transition hover:bg-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800"
+                >
                   <div className="flex h-11 w-11 items-center justify-center rounded-full bg-black text-lg font-bold text-white dark:bg-white dark:text-black">
                     {userInfo.name.charAt(0).toUpperCase()}
                   </div>
 
                   <div>
                     <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                      Welcome back
+                      View profile
                     </p>
 
                     <p className="font-semibold text-zinc-900 dark:text-white">
                       {userInfo.name}
                     </p>
                   </div>
-                </div>
+                </Link>
 
                 <button
                   onClick={logoutHandler}

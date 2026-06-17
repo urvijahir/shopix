@@ -86,7 +86,7 @@ function OrdersPage() {
                     </h3>
 
                     <p className="font-bold text-green-600">
-                      ${order.totalPrice}
+                      ₹{order.totalPrice.toLocaleString("en-IN")}
                     </p>
                   </div>
                 </div>

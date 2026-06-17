@@ -243,7 +243,7 @@ function ProductDetailsPage() {
 
           <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
             <span className="text-4xl font-bold text-zinc-900 dark:text-white">
-              ${product.price}
+              ₹{product.price.toLocaleString("en-IN")}
             </span>
 
             <button

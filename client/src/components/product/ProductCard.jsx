@@ -56,7 +56,7 @@ function ProductCard({ product }) {
 
         <div className="mt-8 flex items-center justify-between gap-4">
           <span className="text-2xl font-bold text-zinc-900 dark:text-white sm:text-4xl">
-            ${product.price}
+            ₹{product.price.toLocaleString("en-IN")}
           </span>
 
           <Link

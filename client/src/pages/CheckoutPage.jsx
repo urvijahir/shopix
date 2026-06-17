@@ -239,7 +239,7 @@ function CheckoutPage() {
                   </div>
 
                   <p className="font-semibold text-zinc-900 dark:text-white">
-                    ${item.price * item.quantity}
+                    ₹{item.price * item.quantity}
                   </p>
                 </div>
               ))}
@@ -254,7 +254,7 @@ function CheckoutPage() {
                 </span>
 
                 <span className="font-semibold text-zinc-900 dark:text-white">
-                  ${subtotal}
+                  ₹{subtotal.toLocaleString("en-IN")}
                 </span>
               </div>
 
@@ -264,14 +264,14 @@ function CheckoutPage() {
                 </span>
 
                 <span className="font-semibold text-zinc-900 dark:text-white">
-                  ${shippingPrice}
+                  ₹{shippingPrice.toLocaleString("en-IN")}
                 </span>
               </div>
 
               <div className="flex items-center justify-between text-2xl font-bold text-zinc-900 dark:text-white">
                 <span>Total</span>
 
-                <span>${totalPrice}</span>
+                <span>₹{totalPrice.toLocaleString("en-IN")}</span>
               </div>
             </div>
           </div>

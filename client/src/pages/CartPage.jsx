@@ -56,7 +56,7 @@ function CartPage() {
                     </h3>
 
                     <p className="mt-1 text-zinc-500 dark:text-zinc-400">
-                      ${item.price}
+                      ₹{item.price.toLocaleString("en-IN")}
                     </p>
 
                     {item.selectedColor && (
@@ -114,7 +114,7 @@ function CartPage() {
                   <h2 className="text-2xl font-bold">Total</h2>
 
                   <span className="mt-2 block text-3xl font-bold">
-                    ${totalPrice}
+                    ₹{totalPrice.toLocaleString("en-IN")}
                   </span>
                 </div>
 

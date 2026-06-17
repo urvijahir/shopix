@@ -364,7 +364,7 @@ function AdminDashboardPage() {
                 </h2>
 
                 <p className="mt-4 text-xl font-bold text-zinc-700 dark:text-zinc-300">
-                  ${product.price}
+                  ₹{product.price.toLocaleString("en-IN")}
                 </p>
 
                 <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">

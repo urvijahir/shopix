@@ -17,6 +17,11 @@ const productSchema = mongoose.Schema(
       required: true,
     },
 
+    galleryImages: {
+      type: [String],
+      default: [],
+    },
+
     category: {
       type: String,
       required: true,

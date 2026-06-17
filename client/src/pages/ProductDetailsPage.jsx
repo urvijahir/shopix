@@ -116,6 +116,13 @@ function ProductDetailsPage() {
     );
   }
 
+  const gallery = product
+    ? [
+        product.colorImages?.[0]?.image || product.image,
+        ...(product.galleryImages || []),
+      ].filter((img) => img && img.startsWith("http"))
+    : [];
+
   return (
     <section className="bg-white px-4 py-10 dark:bg-zinc-950 sm:px-6 lg:py-16">
       <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-2">
@@ -125,6 +132,28 @@ function ProductDetailsPage() {
             alt={product.title}
             className="mx-auto h-72 w-full max-w-md rounded-3xl object-contain shadow-xl sm:h-96 md:h-[500px]"
           />
+
+          {gallery.length > 1 && (
+            <div className="mt-5 flex flex-wrap justify-center gap-3">
+              {gallery.map((img, index) => (
+                <button
+                  key={index}
+                  onClick={() => setDisplayImage(img)}
+                  className={`rounded-xl border p-1 transition ${
+                    displayImage === img
+                      ? "border-black dark:border-white"
+                      : "border-zinc-300 dark:border-zinc-700"
+                  }`}
+                >
+                  <img
+                    src={img}
+                    alt={`${product.title} ${index + 1}`}
+                    className="h-16 w-16 rounded-lg object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div>

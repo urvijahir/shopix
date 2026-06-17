@@ -12,6 +12,7 @@ function AdminDashboardPage() {
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
   const [image, setImage] = useState("");
+  const [galleryImages, setGalleryImages] = useState("");
   const [description, setDescription] = useState("");
   const [colors, setColors] = useState("");
   const [sizes, setSizes] = useState("");
@@ -25,6 +26,7 @@ function AdminDashboardPage() {
     setPrice("");
     setCategory("");
     setImage("");
+    setGalleryImages("");
     setDescription("");
     setColors("");
     setSizes("");
@@ -61,11 +63,17 @@ function AdminDashboardPage() {
       (item) => item.color.trim() !== "" && item.image.trim() !== "",
     );
 
+    const galleryArray = galleryImages
+      .split(",")
+      .map((img) => img.trim())
+      .filter((img) => img !== "");
+
     return {
       title,
       price: Number(price),
       category,
       image,
+      galleryImages: galleryArray,
       description,
       colors: colorArray,
       sizes: sizeArray,
@@ -116,6 +124,7 @@ function AdminDashboardPage() {
     setPrice(product.price || "");
     setCategory(product.category || "");
     setImage(product.image || "");
+    setGalleryImages(product.galleryImages?.join(", ") || "");
     setDescription(product.description || "");
     setColors(product.colors?.join(", ") || "");
     setSizes(product.sizes?.join(", ") || "");
@@ -240,6 +249,14 @@ function AdminDashboardPage() {
               onChange={(e) => setImage(e.target.value)}
               className="rounded-2xl border border-zinc-300 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white md:col-span-2"
               required
+            />
+
+            <input
+              type="text"
+              placeholder="Gallery Images URLs (comma separated)"
+              value={galleryImages}
+              onChange={(e) => setGalleryImages(e.target.value)}
+              className="rounded-2xl border border-zinc-300 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white md:col-span-2"
             />
 
             <textarea

@@ -105,6 +105,16 @@ function OrdersPage() {
                   </p>
                 </div>
 
+                <div>
+                  <h3 className="font-bold text-zinc-900 dark:text-white">
+                    Payment
+                  </h3>
+
+                  <p className="text-zinc-500">
+                    {order.paymentMethod || "Cash on Delivery"}
+                  </p>
+                </div>
+
                 <div className="border-t border-zinc-200 pt-6 dark:border-zinc-700">
                   <h3 className="mb-4 text-xl font-bold dark:text-white">
                     Products

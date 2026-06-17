@@ -28,6 +28,7 @@ function CheckoutPage() {
     postalCode: "",
     country: "",
   });
+  const [paymentMethod, setPaymentMethod] = useState("Cash on Delivery");
 
   const handleChange = (e) => {
     setShippingData({
@@ -55,8 +56,11 @@ function CheckoutPage() {
         orderItems: cartItems,
         shippingAddress: shippingData,
         totalPrice,
+        paymentMethod,
+        isPaid: false,
       });
 
+      setPaymentMethod("Cash on Delivery");
       setOrderPlaced(true);
 
       toast.success("Order placed successfully");
@@ -148,6 +152,35 @@ function CheckoutPage() {
                 className="w-full rounded-2xl border border-zinc-200 bg-white px-5 py-4 text-zinc-900 outline-none transition focus:border-black dark:border-zinc-700 dark:bg-zinc-950 dark:text-white dark:placeholder:text-zinc-400"
                 required
               />
+
+              <div>
+                <h2 className="mb-4 text-xl font-bold text-zinc-900 dark:text-white">
+                  Payment Method
+                </h2>
+
+                <div className="space-y-3">
+                  {["Cash on Delivery", "UPI Demo", "Card Demo"].map(
+                    (method) => (
+                      <label
+                        key={method}
+                        className="flex cursor-pointer items-center gap-3 rounded-2xl border border-zinc-200 p-4 dark:border-zinc-700"
+                      >
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          value={method}
+                          checked={paymentMethod === method}
+                          onChange={(e) => setPaymentMethod(e.target.value)}
+                        />
+
+                        <span className="font-medium text-zinc-900 dark:text-white">
+                          {method}
+                        </span>
+                      </label>
+                    ),
+                  )}
+                </div>
+              </div>
 
               <button
                 type="submit"

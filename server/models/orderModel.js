@@ -29,6 +29,17 @@ const orderSchema = mongoose.Schema(
       enum: ["Pending", "Shipped", "Delivered"],
       default: "Pending",
     },
+
+    paymentMethod: {
+      type: String,
+      required: true,
+      default: "Cash on Delivery",
+    },
+
+    isPaid: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

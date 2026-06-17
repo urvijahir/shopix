@@ -35,7 +35,7 @@ function FeaturedProducts({
         <select
           value={sortOption}
           onChange={(e) => setSortOption(e.target.value)}
-          className="w-full md:w-auto rounded-xl border border-zinc-300 bg-white px-4 py-3 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
+          className="w-full md:w-auto rounded-2xl border border-zinc-300 bg-white px-4 py-3 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
         >
           <option value="default">Sort Products</option>
 

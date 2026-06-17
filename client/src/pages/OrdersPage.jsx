@@ -67,7 +67,7 @@ function OrdersPage() {
 
                     <div className="mt-2">
                       <span className="rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
-                        Delivered
+                        {order.status || "Pending"}
                       </span>
                     </div>
                   </div>

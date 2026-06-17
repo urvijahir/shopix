@@ -72,12 +72,21 @@ function Navbar() {
             </Link>
 
             {userInfo?.email === "admin29@gmail.com" && (
-              <Link
-                to="/admin"
-                className="text-sm font-medium transition hover:text-black dark:text-zinc-200 dark:hover:text-white"
-              >
-                Admin
-              </Link>
+              <>
+                <Link
+                  to="/admin"
+                  className="text-sm font-medium transition hover:text-black dark:text-zinc-200 dark:hover:text-white"
+                >
+                  Admin
+                </Link>
+
+                <Link
+                  to="/admin/orders"
+                  className="text-sm font-medium transition hover:text-black dark:text-zinc-200 dark:hover:text-white"
+                >
+                  Admin Orders
+                </Link>
+              </>
             )}
 
             <button
@@ -170,13 +179,23 @@ function Navbar() {
             </button>
 
             {userInfo?.email === "admin29@gmail.com" && (
-              <Link
-                to="/admin"
-                onClick={() => setIsOpen(false)}
-                className="rounded-lg px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-              >
-                Admin
-              </Link>
+              <>
+                <Link
+                  to="/admin"
+                  onClick={() => setIsOpen(false)}
+                  className="rounded-lg px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                >
+                  Admin
+                </Link>
+
+                <Link
+                  to="/admin/orders"
+                  onClick={() => setIsOpen(false)}
+                  className="rounded-lg px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                >
+                  Admin Orders
+                </Link>
+              </>
             )}
 
             {userInfo ? (

@@ -1,11 +1,10 @@
 import ProductCard from "./ProductCard";
 import ProductSkeleton from "../ui/ProductSkeleton";
+import CustomSelect from "../ui/CustomSelect";
 
 function FeaturedProducts({
   products,
   loading,
-  search,
-  setSearch,
   sortOption,
   setSortOption,
   currentPage,
@@ -14,40 +13,31 @@ function FeaturedProducts({
 }) {
   return (
     <section className="mx-auto max-w-7xl px-6 py-12">
-      <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      {/* Header */}
+      <div className="mb-10 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-wide text-blue-600">
-            Featured Products
+          <p className="text-sm font-semibold uppercase tracking-[3px] text-violet-600">
+            Featured Collection
           </p>
 
-          <h2 className="mt-2 text-4xl font-bold text-zinc-900 dark:text-white">
+          <h2 className="mt-2 text-3xl font-bold text-zinc-900 dark:text-white sm:text-4xl">
             Trending Products
           </h2>
+
+          <p className="mt-3 max-w-xl text-zinc-500 dark:text-zinc-400">
+            Explore our latest arrivals, best sellers, and customer favorites
+            carefully selected for you.
+          </p>
         </div>
 
-        <input
-          type="text"
-          placeholder="Search products..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="rounded-xl border border-zinc-300 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-black dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:placeholder:text-zinc-400"
-        />
-        <select
-          value={sortOption}
-          onChange={(e) => setSortOption(e.target.value)}
-          className="w-full md:w-auto rounded-2xl border border-zinc-300 bg-white px-4 py-3 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
-        >
-          <option value="default">Sort Products</option>
-
-          <option value="low-high">Price: Low To High</option>
-
-          <option value="high-low">Price: High To Low</option>
-
-          <option value="a-z">Name: A-Z</option>
-        </select>
+        {/*  Sort */}
+        <div className="flex w-full flex-col gap-4 sm:flex-row lg:w-auto">
+          <CustomSelect value={sortOption} onChange={setSortOption} />
+        </div>
       </div>
 
-      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      {/* Products */}
+      <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3">
         {loading ? (
           <>
             <ProductSkeleton />
@@ -63,15 +53,17 @@ function FeaturedProducts({
             </h3>
 
             <p className="mt-3 text-zinc-500 dark:text-zinc-400">
-              Try searching another product.
+              Try searching for another product.
             </p>
           </div>
         )}
       </div>
+
+      {/* Pagination */}
       <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
         <button
           onClick={() => setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev))}
-          className="rounded-xl bg-black dark:bg-white px-5 py-3 text-white dark:text-black"
+          className="rounded-2xl bg-violet-600 px-5 py-3 font-semibold text-white transition hover:bg-violet-700"
         >
           Previous
         </button>
@@ -80,10 +72,10 @@ function FeaturedProducts({
           <button
             key={index}
             onClick={() => setCurrentPage(index + 1)}
-            className={`h-12 w-12 rounded-xl font-semibold transition ${
+            className={`h-12 w-12 rounded-2xl font-semibold transition ${
               currentPage === index + 1
-                ? "bg-black text-white"
-                : "bg-zinc-200 text-black dark:bg-zinc-800 dark:text-white"
+                ? "bg-violet-600 text-white shadow-lg"
+                : "bg-zinc-200 text-zinc-900 hover:bg-violet-100 dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-700"
             }`}
           >
             {index + 1}
@@ -94,7 +86,7 @@ function FeaturedProducts({
           onClick={() =>
             setCurrentPage((prev) => (prev < totalPages ? prev + 1 : prev))
           }
-          className="rounded-xl bg-black dark:bg-white px-5 py-3 text-white dark:text-black"
+          className="rounded-2xl bg-violet-600 px-5 py-3 font-semibold text-white transition hover:bg-violet-700"
         >
           Next
         </button>

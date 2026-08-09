@@ -16,8 +16,13 @@ import AdminRoute from "./components/AdminRoute";
 import Footer from "./components/layout/Footer";
 import ProfilePage from "./pages/ProfilePage";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
+import { useLocation } from "react-router-dom";
 
 function App() {
+  const location = useLocation();
+
+  const hideFooter =
+    location.pathname === "/login" || location.pathname === "/register";
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 overflow-x-hidden">
       <Navbar />
@@ -42,7 +47,7 @@ function App() {
           <Route path="/admin/orders" element={<AdminOrdersPage />} />
         </Route>
       </Routes>
-      <Footer />
+      {!hideFooter && <Footer />}
     </div>
   );
 }

@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { BASE_URL } from "../config";
 
 function AdminOrdersPage() {
   const [orders, setOrders] = useState([]);
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
 
   const fetchOrders = async () => {
     try {
@@ -48,6 +51,21 @@ function AdminOrdersPage() {
     return "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300";
   };
 
+  const filteredOrders = orders.filter((order) => {
+    const matchesSearch =
+      order._id.toLowerCase().includes(search.toLowerCase()) ||
+      order.shippingAddress?.fullName
+        ?.toLowerCase()
+        .includes(search.toLowerCase());
+
+    const matchesStatus =
+      statusFilter === "All"
+        ? true
+        : (order.status || "Pending") === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
+
   return (
     <section className="min-h-screen bg-zinc-100 px-4 py-10 dark:bg-zinc-950 sm:px-6 lg:py-16">
       <div className="mx-auto max-w-7xl">
@@ -55,8 +73,62 @@ function AdminOrdersPage() {
           Admin Orders
         </h1>
 
-        {orders.length === 0 ? (
-          <div className="rounded-3xl bg-white p-8 text-center shadow-sm dark:bg-zinc-900">
+        <div className="mb-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="rounded-3xl bg-white p-6 shadow-sm dark:bg-zinc-900">
+            <p className="text-zinc-500">📦 Total Orders</p>
+            <h2 className="mt-2 text-3xl font-bold dark:text-white">
+              {orders.length}
+            </h2>
+          </div>
+
+          <div className="rounded-3xl bg-white p-6 shadow-sm dark:bg-zinc-900">
+            <p className="text-yellow-600">🟡 Pending</p>
+            <h2 className="mt-2 text-3xl font-bold dark:text-white">
+              {
+                orders.filter((o) => (o.status || "Pending") === "Pending")
+                  .length
+              }
+            </h2>
+          </div>
+
+          <div className="rounded-3xl bg-white p-6 shadow-sm dark:bg-zinc-900">
+            <p className="text-blue-600">🚚 Shipped</p>
+            <h2 className="mt-2 text-3xl font-bold dark:text-white">
+              {orders.filter((o) => o.status === "Shipped").length}
+            </h2>
+          </div>
+
+          <div className="rounded-3xl bg-white p-6 shadow-sm dark:bg-zinc-900">
+            <p className="text-green-600">✅ Delivered</p>
+            <h2 className="mt-2 text-3xl font-bold dark:text-white">
+              {orders.filter((o) => o.status === "Delivered").length}
+            </h2>
+          </div>
+        </div>
+
+        <div className="mb-10 flex flex-col gap-4 md:flex-row">
+          <input
+            type="text"
+            placeholder="Search Order ID or Customer..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="flex-1 rounded-2xl border border-zinc-300 bg-white px-5 py-3 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-200 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
+          />
+
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="rounded-2xl border border-zinc-300 bg-white px-5 py-3 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-200 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
+          >
+            <option>All</option>
+            <option>Pending</option>
+            <option>Shipped</option>
+            <option>Delivered</option>
+          </select>
+        </div>
+
+        {filteredOrders.length === 0 ? (
+          <div className="rounded-3xl border border-violet-100 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-zinc-800 dark:bg-zinc-900 sm:p-8">
             <div className="text-6xl">📦</div>
 
             <h2 className="mt-4 text-3xl font-bold dark:text-white">
@@ -65,47 +137,41 @@ function AdminOrdersPage() {
           </div>
         ) : (
           <div className="space-y-8">
-            {orders.map((order) => (
+            {filteredOrders.map((order) => (
               <div
                 key={order._id}
-                className="rounded-3xl bg-white p-6 shadow-sm dark:bg-zinc-900 sm:p-8"
+                className="rounded-3xl border border-violet-100 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-zinc-800 dark:bg-zinc-900 sm:p-8"
               >
-                <div className="mb-6 grid gap-6 md:grid-cols-4">
-                  <div>
-                    <h3 className="font-bold text-zinc-900 dark:text-white">
-                      Order ID
-                    </h3>
+                <div className="mb-8 grid gap-5 md:grid-cols-4">
+                  <div className="rounded-2xl bg-violet-50 p-5 dark:bg-zinc-800">
+                    <p className="text-sm text-zinc-500">Order ID</p>
 
-                    <p className="text-zinc-500">#{order._id.slice(-6)}</p>
+                    <h3 className="mt-2 font-bold text-zinc-900 dark:text-white">
+                      #{order._id.slice(-6)}
+                    </h3>
                   </div>
 
-                  <div>
-                    <h3 className="font-bold text-zinc-900 dark:text-white">
-                      Date
-                    </h3>
+                  <div className="rounded-2xl bg-violet-50 p-5 dark:bg-zinc-800">
+                    <p className="text-sm text-zinc-500">Order Date</p>
 
-                    <p className="text-zinc-500">
+                    <h3 className="mt-2 font-bold text-zinc-900 dark:text-white">
                       {new Date(order.createdAt).toLocaleDateString()}
-                    </p>
+                    </h3>
                   </div>
 
-                  <div>
-                    <h3 className="font-bold text-zinc-900 dark:text-white">
-                      Total
-                    </h3>
+                  <div className="rounded-2xl bg-violet-50 p-5 dark:bg-zinc-800">
+                    <p className="text-sm text-zinc-500">Total Amount</p>
 
-                    <p className="font-bold text-green-600">
+                    <h3 className="mt-2 text-xl font-bold text-green-600">
                       ₹{order.totalPrice.toLocaleString("en-IN")}
-                    </p>
+                    </h3>
                   </div>
 
-                  <div>
-                    <h3 className="font-bold text-zinc-900 dark:text-white">
-                      Status
-                    </h3>
+                  <div className="rounded-2xl bg-violet-50 p-5 dark:bg-zinc-800">
+                    <p className="text-sm text-zinc-500">Status</p>
 
                     <span
-                      className={`mt-2 inline-block rounded-full px-3 py-1 text-sm font-semibold ${getStatusStyle(
+                      className={`mt-3 inline-flex rounded-full px-4 py-2 text-sm font-semibold ${getStatusStyle(
                         order.status || "Pending",
                       )}`}
                     >
@@ -114,49 +180,111 @@ function AdminOrdersPage() {
                   </div>
                 </div>
 
-                <div className="mb-6">
+                <div className="mb-6 rounded-2xl bg-violet-50 p-6 dark:bg-zinc-800">
                   <h3 className="font-bold text-zinc-900 dark:text-white">
-                    Shipping Address
+                    Customer
                   </h3>
 
-                  <p className="mt-1 text-zinc-500">
+                  <p className="mt-3 font-medium text-zinc-900 dark:text-white">
                     {order.shippingAddress?.fullName}
                   </p>
 
                   <p className="text-zinc-500">
+                    {order.user?.email || "No email available"}
+                  </p>
+
+                  <p className="mt-2 text-zinc-500">
                     {order.shippingAddress?.city},{" "}
                     {order.shippingAddress?.country}
                   </p>
                 </div>
 
-                <div className="mb-6 border-t border-zinc-200 pt-6 dark:border-zinc-700">
-                  <h3 className="mb-4 text-xl font-bold dark:text-white">
-                    Products
+                <div className="mb-6 rounded-2xl bg-violet-50 p-6 dark:bg-zinc-800">
+                  <h3 className="mb-4 text-lg font-bold text-zinc-900 dark:text-white">
+                    💳 Payment Details
                   </h3>
 
-                  <div className="space-y-4">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div>
+                      <p className="text-sm text-zinc-500">Payment Method</p>
+
+                      <p className="mt-1 font-semibold text-zinc-900 dark:text-white">
+                        {order.paymentMethod || "Cash on Delivery"}
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="text-sm text-zinc-500">Payment Status</p>
+
+                      <span
+                        className={`mt-2 inline-flex rounded-full px-3 py-1 text-sm font-semibold ${
+                          order.isPaid
+                            ? "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300"
+                            : "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300"
+                        }`}
+                      >
+                        {order.isPaid ? "Paid" : "Not Paid"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-6 border-t border-zinc-200 pt-6 dark:border-zinc-700">
+                  <h3 className="mb-6 text-2xl font-bold text-zinc-900 dark:text-white">
+                    Ordered Products
+                  </h3>
+                  <div className="space-y-5">
                     {order.orderItems?.map((item, index) => (
-                      <div key={index} className="flex items-center gap-4">
-                        <img
-                          src={item.image}
-                          alt={item.title}
-                          className="h-16 w-16 rounded-xl object-cover"
-                        />
+                      <div
+                        key={index}
+                        className="flex flex-col gap-5 rounded-2xl border border-violet-100 bg-violet-50 p-5 transition duration-300 hover:shadow-lg dark:border-zinc-700 dark:bg-zinc-800 lg:flex-row lg:items-center lg:justify-between"
+                      >
+                        <div className="flex items-center gap-5">
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className="h-24 w-24 rounded-2xl object-cover shadow"
+                          />
 
-                        <div>
-                          <p className="font-semibold text-zinc-900 dark:text-white">
-                            {item.title}
-                          </p>
+                          <div>
+                            <h4 className="text-lg font-bold text-zinc-900 dark:text-white">
+                              {item.title}
+                            </h4>
 
-                          <p className="text-zinc-500">Qty: {item.quantity}</p>
+                            <div className="mt-3 flex flex-wrap gap-4 text-sm text-zinc-500">
+                              <span>
+                                Qty : <strong>{item.quantity}</strong>
+                              </span>
+
+                              {item.selectedColor && (
+                                <span>
+                                  Color : <strong>{item.selectedColor}</strong>
+                                </span>
+                              )}
+
+                              {item.selectedSize && (
+                                <span>
+                                  Size : <strong>{item.selectedSize}</strong>
+                                </span>
+                              )}
+                            </div>
+                          </div>
                         </div>
+
+                        <Link
+                          to={`/product/${item._id}`}
+                          className="rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-6 py-3 text-center font-semibold text-white transition duration-300 hover:scale-105"
+                        >
+                          View Product
+                        </Link>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <label className="font-semibold text-zinc-900 dark:text-white">
+                <hr className="my-8 border-violet-100 dark:border-zinc-700" />
+                <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-2xl bg-violet-50 p-5 dark:bg-zinc-800 md:flex-row md:items-center">
+                  <label className="text-lg font-semibold text-zinc-900 dark:text-white">
                     Update Status:
                   </label>
 

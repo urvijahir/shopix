@@ -7,13 +7,15 @@ import CategorySection from "../components/category/CategorySection";
 import Features from "../components/home/Features";
 
 import { BASE_URL } from "../config";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 function HomePage() {
   const [products, setProducts] = useState([]);
 
   const [loading, setLoading] = useState(true);
 
-  const [search, setSearch] = useState("");
+  const search = useSelector((state) => state.search.search);
 
   const [selectedCategory, setSelectedCategory] = useState("All");
 
@@ -23,6 +25,7 @@ function HomePage() {
   const productsPerPage = 3;
 
   const [error, setError] = useState("");
+  const location = useLocation();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -39,6 +42,16 @@ function HomePage() {
 
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    if (location.hash === "#categories") {
+      setTimeout(() => {
+        document
+          .getElementById("categories")
+          ?.scrollIntoView({ behavior: "smooth" });
+      }, 200);
+    }
+  }, [location]);
 
   const filteredProducts = [...products]
     .filter((product) => {
@@ -101,8 +114,6 @@ function HomePage() {
         <FeaturedProducts
           products={currentProducts}
           loading={loading}
-          search={search}
-          setSearch={setSearch}
           sortOption={sortOption}
           setSortOption={setSortOption}
           currentPage={currentPage}

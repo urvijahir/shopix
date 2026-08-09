@@ -17,6 +17,7 @@ function AdminDashboardPage() {
   const [colors, setColors] = useState("");
   const [sizes, setSizes] = useState("");
   const [stock, setStock] = useState("");
+  const [isNew, setIsNew] = useState(false);
 
   const [colorImages, setColorImages] = useState([{ color: "", image: "" }]);
 
@@ -31,6 +32,7 @@ function AdminDashboardPage() {
     setColors("");
     setSizes("");
     setStock("");
+    setIsNew(false);
     setColorImages([{ color: "", image: "" }]);
   };
 
@@ -79,6 +81,7 @@ function AdminDashboardPage() {
       sizes: sizeArray,
       stock: Number(stock),
       colorImages: validColorImages,
+      isNew,
     };
   };
 
@@ -129,6 +132,7 @@ function AdminDashboardPage() {
     setColors(product.colors?.join(", ") || "");
     setSizes(product.sizes?.join(", ") || "");
     setStock(product.stock || "");
+    setIsNew(product.isNew || false);
 
     setColorImages(
       product.colorImages?.length > 0
@@ -169,13 +173,19 @@ function AdminDashboardPage() {
   }, []);
 
   return (
-    <section className="min-h-screen bg-zinc-100 px-4 py-10 dark:bg-zinc-950 sm:px-6 lg:py-16">
+    <section className="min-h-screen bg-gradient-to-br from-violet-50 via-white to-purple-50 px-6 py-10 dark:from-zinc-950 dark:via-zinc-950 dark:to-black">
       <div className="mx-auto max-w-7xl">
-        <h1 className="mb-10 text-3xl font-bold text-zinc-900 dark:text-white sm:text-5xl">
-          Admin Dashboard
-        </h1>
+        <div className="mb-10">
+          <p className="text-sm font-semibold uppercase  text-violet-600">
+            Shopix Admin
+          </p>
 
-        <div className="mb-12 rounded-3xl bg-white p-5 shadow-sm dark:bg-zinc-900 sm:p-8">
+          <h1 className="mt-2 text-5xl font-bold text-zinc-900 dark:text-white">
+            Manage Products
+          </h1>
+        </div>
+
+        <div className="rounded-[30px] border border-violet-100 bg-white p-8 shadow-xl dark:border-zinc-800 dark:bg-zinc-900">
           <h2 className="mb-6 text-2xl font-bold text-zinc-900 dark:text-white sm:text-3xl">
             {editingProductId ? "Edit Product" : "Add Product"}
           </h2>
@@ -189,23 +199,14 @@ function AdminDashboardPage() {
               placeholder="Product Title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="rounded-2xl border border-zinc-300 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
-              required
-            />
-
-            <input
-              type="number"
-              placeholder="Price"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              className="rounded-2xl border border-zinc-300 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+              className="rounded-2xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
               required
             />
 
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="rounded-2xl border border-zinc-300 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+              className="rounded-2xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
               required
             >
               <option value="">Select Category</option>
@@ -219,27 +220,52 @@ function AdminDashboardPage() {
 
             <input
               type="number"
+              placeholder="Price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              className="rounded-2xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+              required
+            />
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                id="isNew"
+                checked={isNew}
+                onChange={(e) => setIsNew(e.target.checked)}
+                className="h-5 w-5 rounded border-zinc-300 accent-violet-600"
+              />
+
+              <label
+                htmlFor="isNew"
+                className="font-medium text-zinc-700 dark:text-zinc-200"
+              >
+                Mark as New Product
+              </label>
+            </div>
+
+            <input
+              type="number"
               placeholder="Stock Quantity"
               value={stock}
               onChange={(e) => setStock(e.target.value)}
-              className="rounded-2xl border border-zinc-300 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+              className="rounded-2xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
               required
             />
 
             <input
               type="text"
-              placeholder="Colors e.g. Red, Blue, Black"
+              placeholder="Available Colors ( Red , Blue , Black )"
               value={colors}
               onChange={(e) => setColors(e.target.value)}
-              className="rounded-2xl border border-zinc-300 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+              className="rounded-2xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
             />
 
             <input
               type="text"
-              placeholder="Sizes e.g. S, M, L, XL"
+              placeholder=" Available Sizes ( XS , S , M , L , XL )"
               value={sizes}
               onChange={(e) => setSizes(e.target.value)}
-              className="rounded-2xl border border-zinc-300 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+              className="rounded-2xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
             />
 
             <input
@@ -247,7 +273,7 @@ function AdminDashboardPage() {
               placeholder="Main Image URL"
               value={image}
               onChange={(e) => setImage(e.target.value)}
-              className="rounded-2xl border border-zinc-300 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white md:col-span-2"
+              className="rounded-2xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white md:col-span-2"
               required
             />
 
@@ -256,7 +282,7 @@ function AdminDashboardPage() {
               placeholder="Gallery Images URLs (comma separated)"
               value={galleryImages}
               onChange={(e) => setGalleryImages(e.target.value)}
-              className="rounded-2xl border border-zinc-300 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white md:col-span-2"
+              className="rounded-2xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white md:col-span-2"
             />
 
             <textarea
@@ -264,7 +290,7 @@ function AdminDashboardPage() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows="4"
-              className="rounded-2xl border border-zinc-300 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white md:col-span-2"
+              className="rounded-2xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white md:col-span-2"
               required
             />
 
@@ -272,12 +298,15 @@ function AdminDashboardPage() {
               <h3 className="mb-3 font-semibold text-zinc-900 dark:text-white">
                 Color Images
               </h3>
+              <p className="text-sm text-zinc-500">
+                Upload an image for every product color.
+              </p>
 
               <div className="space-y-4">
                 {colorImages.map((item, index) => (
                   <div
                     key={index}
-                    className="grid gap-4 rounded-2xl border border-zinc-200 p-4 dark:border-zinc-700 md:grid-cols-2"
+                    className="grid gap-4 rounded-3xl border border-violet-100 bg-violet-50 p-5 shadow-sm transition duration-300 hover:shadow-md dark:border-zinc-700 dark:bg-zinc-800 md:grid-cols-2"
                   >
                     <input
                       type="text"
@@ -286,7 +315,7 @@ function AdminDashboardPage() {
                       onChange={(e) =>
                         updateColorImageField(index, "color", e.target.value)
                       }
-                      className="rounded-xl border border-zinc-300 bg-white px-4 py-3 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+                      className="rounded-xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-4 py-3 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
                     />
 
                     <input
@@ -296,7 +325,7 @@ function AdminDashboardPage() {
                       onChange={(e) =>
                         updateColorImageField(index, "image", e.target.value)
                       }
-                      className="rounded-xl border border-zinc-300 bg-white px-4 py-3 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+                      className="rounded-xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-4 py-3 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
                     />
 
                     {colorImages.length > 1 && (
@@ -315,7 +344,7 @@ function AdminDashboardPage() {
               <button
                 type="button"
                 onClick={addColorImageField}
-                className="mt-4 rounded-xl bg-zinc-900 px-5 py-3 text-white dark:bg-white dark:text-black"
+                className="mt-5 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-6 py-3 font-semibold text-white transition duration-300 hover:scale-105 hover:shadow-lg"
               >
                 + Add Color Image
               </button>
@@ -324,7 +353,7 @@ function AdminDashboardPage() {
             <div className="flex flex-col gap-4 sm:flex-row">
               <button
                 type="submit"
-                className="rounded-2xl bg-black px-8 py-4 font-semibold text-white transition hover:scale-105 dark:bg-white dark:text-black"
+                className="w-full rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600 py-4 font-semibold text-white transition duration-300 hover:scale-105"
               >
                 {editingProductId ? "Update Product" : "Add Product"}
               </button>
@@ -333,7 +362,7 @@ function AdminDashboardPage() {
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="rounded-2xl border border-zinc-300 px-8 py-4 font-semibold text-zinc-900 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-800"
+                  className="rounded-2xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 px-8 py-4 font-semibold text-zinc-900 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-800"
                 >
                   Cancel Edit
                 </button>
@@ -342,75 +371,89 @@ function AdminDashboardPage() {
           </form>
         </div>
 
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((product) => (
-            <div
-              key={product._id}
-              className="overflow-hidden rounded-3xl bg-white shadow-sm dark:bg-zinc-900"
-            >
-              <img
-                src={product.image}
-                alt={product.title}
-                className="h-64 w-full object-cover"
-              />
+        <div className="mt-12">
+          <h2 className="mb-6 text-3xl font-bold">All Products</h2>
 
-              <div className="p-6">
-                <p className="text-sm font-semibold text-blue-600">
-                  {product.category}
-                </p>
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {products.map((product) => (
+              <div
+                key={product._id}
+                className="overflow-hidden rounded-3xl bg-white shadow-sm dark:bg-zinc-900"
+              >
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  className="h-64 w-full rounded-2xl object-cover"
+                />
 
-                <h2 className="mt-3 text-2xl font-bold text-zinc-900 dark:text-white">
-                  {product.title}
-                </h2>
-
-                <p className="mt-4 text-xl font-bold text-zinc-700 dark:text-zinc-300">
-                  ₹{product.price.toLocaleString("en-IN")}
-                </p>
-
-                <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
-                  Stock: {product.stock ?? 0}
-                </p>
-
-                {(product.colorImages?.length > 0 ||
-                  product.colors?.length > 0) && (
-                  <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
-                    Colors:{" "}
-                    {product.colorImages?.length > 0
-                      ? product.colorImages.map((item) => item.color).join(", ")
-                      : product.colors.join(", ")}
+                <div className="p-6">
+                  <p className="text-sm font-semibold rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-700 dark:bg-violet-900/30 dark:text-violet-300">
+                    {product.category}
                   </p>
-                )}
 
-                {product.sizes?.length > 0 && (
-                  <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-                    Sizes: {product.sizes.join(", ")}
-                  </p>
-                )}
+                  <h2 className="mt-3 text-2xl font-bold text-zinc-900 dark:text-white">
+                    {product.title}
+                  </h2>
 
-                {product.colorImages?.length > 0 && (
-                  <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-                    Color Images: {product.colorImages.length}
-                  </p>
-                )}
+                  <div className="inline-block rounded-xl bg-violet-100 px-4 py-2 text-xl font-bold text-violet-700 dark:bg-violet-900/30 dark:text-violet-300">
+                    ₹{product.price.toLocaleString("en-IN")}
+                  </div>
 
-                <div className="mt-6 flex gap-3">
-                  <button
-                    onClick={() => editProductHandler(product)}
-                    className="rounded-2xl bg-black px-5 py-3 text-white transition hover:opacity-90 dark:bg-white dark:text-black"
+                  <span
+                    className={`rounded-full px-3 py-1 text-sm font-semibold ${
+                      product.stock > 0
+                        ? "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300"
+                        : "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300"
+                    }`}
                   >
-                    Edit
-                  </button>
+                    {product.stock > 0
+                      ? `In Stock • ${product.stock}`
+                      : "Out of Stock"}
+                  </span>
 
-                  <button
-                    onClick={() => deleteProductHandler(product._id)}
-                    className="rounded-2xl bg-red-500 px-5 py-3 text-white transition hover:bg-red-600"
-                  >
-                    Delete
-                  </button>
+                  {(product.colorImages?.length > 0 ||
+                    product.colors?.length > 0) && (
+                    <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+                      Colors:{" "}
+                      {product.colorImages?.length > 0
+                        ? product.colorImages
+                            .map((item) => item.color)
+                            .join(", ")
+                        : product.colors.join(", ")}
+                    </p>
+                  )}
+
+                  {product.sizes?.length > 0 && (
+                    <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                      Sizes: {product.sizes.join(", ")}
+                    </p>
+                  )}
+
+                  {product.colorImages?.length > 0 && (
+                    <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                      Color Images: {product.colorImages.length}
+                    </p>
+                  )}
+
+                  <div className="mt-6 flex items-center gap-4">
+                    <button
+                      onClick={() => editProductHandler(product)}
+                      className="rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600  px-5 py-3 text-white transition hover:opacity-90 dark:bg-white dark:text-black"
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      onClick={() => deleteProductHandler(product._id)}
+                      className="rounded-2xl border border-red-300 bg-white px-6 py-3 font-medium text-red-600 transition duration-300 hover:bg-red-500 hover:text-white hover:border-red-500 dark:border-red-500/40 dark:bg-zinc-900 dark:text-red-400 dark:hover:bg-red-500 dark:hover:text-white"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>

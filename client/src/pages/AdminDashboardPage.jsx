@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { BASE_URL } from "../config";
@@ -17,7 +18,7 @@ function AdminDashboardPage() {
   const [colors, setColors] = useState("");
   const [sizes, setSizes] = useState("");
   const [stock, setStock] = useState("");
-  const [isNew, setIsNew] = useState(false);
+  const [isNewProduct, setIsNewProduct] = useState(false);
 
   const [colorImages, setColorImages] = useState([{ color: "", image: "" }]);
 
@@ -32,7 +33,7 @@ function AdminDashboardPage() {
     setColors("");
     setSizes("");
     setStock("");
-    setIsNew(false);
+    setIsNewProduct(false);
     setColorImages([{ color: "", image: "" }]);
   };
 
@@ -81,7 +82,7 @@ function AdminDashboardPage() {
       sizes: sizeArray,
       stock: Number(stock),
       colorImages: validColorImages,
-      isNew,
+      isNewProduct,
     };
   };
 
@@ -132,7 +133,7 @@ function AdminDashboardPage() {
     setColors(product.colors?.join(", ") || "");
     setSizes(product.sizes?.join(", ") || "");
     setStock(product.stock || "");
-    setIsNew(product.isNew || false);
+    setIsNewProduct(product.isNewProduct || false);
 
     setColorImages(
       product.colorImages?.length > 0
@@ -140,9 +141,9 @@ function AdminDashboardPage() {
         : [{ color: "", image: "" }],
     );
 
-    window.scrollTo({
-      top: 0,
+    document.getElementById("product-form")?.scrollIntoView({
       behavior: "smooth",
+      block: "start",
     });
   };
 
@@ -183,9 +184,19 @@ function AdminDashboardPage() {
           <h1 className="mt-2 text-5xl font-bold text-zinc-900 dark:text-white">
             Manage Products
           </h1>
+
+          <Link
+            to="/admin/orders"
+            className="mt-6 inline-flex rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-6 py-3 font-semibold text-white transition duration-300 hover:scale-105 hover:shadow-lg"
+          >
+            📦 Manage Orders
+          </Link>
         </div>
 
-        <div className="rounded-[30px] border border-violet-100 bg-white p-8 shadow-xl dark:border-zinc-800 dark:bg-zinc-900">
+        <div
+          id="product-form"
+          className="scroll-mt-6 rounded-[30px] border border-violet-100 bg-white p-8 shadow-xl dark:border-zinc-800 dark:bg-zinc-900"
+        >
           <h2 className="mb-6 text-2xl font-bold text-zinc-900 dark:text-white sm:text-3xl">
             {editingProductId ? "Edit Product" : "Add Product"}
           </h2>
@@ -199,14 +210,14 @@ function AdminDashboardPage() {
               placeholder="Product Title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="rounded-2xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+              className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
               required
             />
 
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="rounded-2xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+              className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
               required
             >
               <option value="">Select Category</option>
@@ -223,15 +234,15 @@ function AdminDashboardPage() {
               placeholder="Price"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              className="rounded-2xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+              className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
               required
             />
             <div className="flex items-center gap-3">
               <input
                 type="checkbox"
                 id="isNew"
-                checked={isNew}
-                onChange={(e) => setIsNew(e.target.checked)}
+                checked={isNewProduct}
+                onChange={(e) => setIsNewProduct(e.target.checked)}
                 className="h-5 w-5 rounded border-zinc-300 accent-violet-600"
               />
 
@@ -248,7 +259,7 @@ function AdminDashboardPage() {
               placeholder="Stock Quantity"
               value={stock}
               onChange={(e) => setStock(e.target.value)}
-              className="rounded-2xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+              className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
               required
             />
 
@@ -257,7 +268,7 @@ function AdminDashboardPage() {
               placeholder="Available Colors ( Red , Blue , Black )"
               value={colors}
               onChange={(e) => setColors(e.target.value)}
-              className="rounded-2xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+              className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
             />
 
             <input
@@ -265,7 +276,7 @@ function AdminDashboardPage() {
               placeholder=" Available Sizes ( XS , S , M , L , XL )"
               value={sizes}
               onChange={(e) => setSizes(e.target.value)}
-              className="rounded-2xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+              className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
             />
 
             <input
@@ -273,7 +284,7 @@ function AdminDashboardPage() {
               placeholder="Main Image URL"
               value={image}
               onChange={(e) => setImage(e.target.value)}
-              className="rounded-2xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white md:col-span-2"
+              className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
               required
             />
 
@@ -282,7 +293,7 @@ function AdminDashboardPage() {
               placeholder="Gallery Images URLs (comma separated)"
               value={galleryImages}
               onChange={(e) => setGalleryImages(e.target.value)}
-              className="rounded-2xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white md:col-span-2"
+              className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
             />
 
             <textarea
@@ -290,7 +301,7 @@ function AdminDashboardPage() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows="4"
-              className="rounded-2xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-5 py-4 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white md:col-span-2"
+              className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white md:col-span-2"
               required
             />
 
@@ -301,6 +312,7 @@ function AdminDashboardPage() {
               <p className="text-sm text-zinc-500">
                 Upload an image for every product color.
               </p>
+              <br />
 
               <div className="space-y-4">
                 {colorImages.map((item, index) => (
@@ -315,7 +327,7 @@ function AdminDashboardPage() {
                       onChange={(e) =>
                         updateColorImageField(index, "color", e.target.value)
                       }
-                      className="rounded-xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-4 py-3 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+                      className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
                     />
 
                     <input
@@ -325,7 +337,7 @@ function AdminDashboardPage() {
                       onChange={(e) =>
                         updateColorImageField(index, "image", e.target.value)
                       }
-                      className="rounded-xl border focus:border-violet-500 focus:ring-2 focus:ring-violet-200 bg-white px-4 py-3 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+                      className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
                     />
 
                     {colorImages.length > 1 && (

@@ -25,7 +25,7 @@ function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-violet-50 via-white to-purple-50 dark:from-[#0F0A1F] dark:via-[#18122B] dark:to-[#1F1B33]">
       <div className="mx-auto max-w-7xl px-5 pt-14 pb-8 sm:px-8 sm:pb-10 lg:px-12 lg:pt-20 lg:pb-12">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
+        <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
           {/* LEFT */}
 
           <AnimatePresence mode="wait">
@@ -62,7 +62,7 @@ function HeroSection() {
                 </button>
               </div>
 
-              <div className="mt-12 flex flex-wrap gap-8">
+              <div className="mt-12 hidden flex-wrap gap-8 lg:flex">
                 <div>
                   <h3 className="text-3xl font-bold text-violet-600">10K+</h3>
 
@@ -90,7 +90,7 @@ function HeroSection() {
 
               {/* Dots */}
 
-              <div className="mt-8 flex gap-3">
+              <div className="mt-8 hidden gap-3 lg:flex">
                 {heroSlides.map((item, index) => (
                   <button
                     key={item.id}
@@ -122,12 +122,12 @@ function HeroSection() {
               <img
                 src={slide.image}
                 alt={slide.title}
-                className="relative z-10 mx-auto h-[450px] w-full max-w-md object-contain drop-shadow-[0_35px_55px_rgba(109,93,246,0.35)] sm:h-[520px] lg:h-[720px] lg:max-w-xl"
+                className="relative z-10 mx-auto h-[320px] w-full max-w-sm object-contain drop-shadow-[0_35px_55px_rgba(109,93,246,0.35)] sm:h-[520px] lg:h-[720px] lg:max-w-xl"
               />
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ repeat: Infinity, duration: 3 }}
-                className="absolute left-2 top-6 rounded-2xl border border-white/30 bg-white/80 p-4 shadow-2xl backdrop-blur-md dark:border-white/10 dark:bg-[#221D38]/80"
+                className="absolute left-2 top-4 rounded-2xl border border-white/30 bg-white/80 p-4 shadow-2xl backdrop-blur-md dark:border-white/10 dark:bg-[#221D38]/80"
               >
                 <p className="text-lg font-bold text-violet-600">
                   {slide.offer}
@@ -142,14 +142,14 @@ function HeroSection() {
 
               <button
                 onClick={prevSlide}
-                className="absolute left-10 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-lg backdrop-blur transition hover:bg-violet-600 hover:text-white dark:bg-[#221D38]/90"
+                className="absolute left-3 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-lg backdrop-blur transition hover:bg-violet-600 hover:text-white dark:bg-[#221D38]/90"
               >
                 <ChevronLeft size={20} />
               </button>
 
               <button
                 onClick={nextSlide}
-                className="absolute right-10 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-lg backdrop-blur transition hover:bg-violet-600 hover:text-white dark:bg-[#221D38]/90"
+                className="absolute right-3 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-lg backdrop-blur transition hover:bg-violet-600 hover:text-white dark:bg-[#221D38]/90"
               >
                 <ChevronRight size={20} />
               </button>

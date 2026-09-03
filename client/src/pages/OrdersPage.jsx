@@ -2,23 +2,30 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../config";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function OrdersPage() {
   const [orders, setOrders] = useState([]);
+  const { userInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const { data } = await axios.get(`${BASE_URL}/api/orders`);
+        const { data } = await axios.get(`${BASE_URL}/api/orders/my`, {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        });
 
         setOrders(data);
       } catch (error) {
         console.log(error);
       }
     };
-
-    fetchOrders();
-  }, []);
+    if (userInfo?.token) {
+      fetchOrders();
+    }
+  }, [userInfo]);
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-violet-50 via-white to-purple-50 px-6 py-16 dark:from-zinc-950 dark:via-zinc-950 dark:to-black">

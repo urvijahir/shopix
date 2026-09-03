@@ -5,7 +5,7 @@ import axios from "axios";
 import { BASE_URL } from "../config";
 import toast from "react-hot-toast";
 import { Heart, Package, ShoppingCart } from "lucide-react";
-import { CircleCheck, Truck, Clock3, CircleX } from "lucide-react";
+
 function ProfilePage() {
   const { userInfo } = useSelector((state) => state.auth);
   const { wishlistItems } = useSelector((state) => state.wishlist);
@@ -16,15 +16,22 @@ function ProfilePage() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const { data } = await axios.get(`${BASE_URL}/api/orders`);
+        const { data } = await axios.get(`${BASE_URL}/api/orders/my`, {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        });
+
         setOrders(data);
       } catch (error) {
         console.log(error);
       }
     };
 
-    fetchOrders();
-  }, []);
+    if (userInfo?.token) {
+      fetchOrders();
+    }
+  }, [userInfo]);
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-violet-50 via-white to-purple-50 px-4 py-12 dark:from-zinc-950 dark:via-zinc-950 dark:to-black sm:px-6">

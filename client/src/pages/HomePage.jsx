@@ -96,7 +96,7 @@ function HomePage() {
 
   return (
     <>
-      <div className="min-h-screen bg-white dark:bg-zinc-950">
+      <div className="bg-white dark:bg-zinc-950">
         <HeroSection />
 
         <Features />

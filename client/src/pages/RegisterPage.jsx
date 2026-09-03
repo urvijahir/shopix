@@ -21,7 +21,7 @@ function RegisterPage() {
   const [loading, setLoading] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
-
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showConfirmPassword, setShowConfirmPassword] = useState("");
 
   const navigate = useNavigate();
@@ -31,11 +31,12 @@ function RegisterPage() {
 
     try {
       setLoading(true);
-      if (password !== showConfirmPassword) {
+      if (password !== confirmPassword) {
         toast.error("Passwords do not match");
+        setLoading(false);
         return;
       }
-      await axios.post(`${BASE_URL}/api/users`, {
+      await axios.post(`${BASE_URL}/api/users/register`, {
         name,
         email,
         password,
@@ -121,8 +122,8 @@ function RegisterPage() {
               type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirm Password"
               autoComplete="new-password"
-              value={showConfirmPassword}
-              onChange={(e) => setShowConfirmPassword(e.target.value)}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               className="w-full rounded-2xl border border-zinc-200 bg-white px-5 py-3 lg:py-4 pr-14 text-zinc-900 outline-none transition-all duration-300 hover:border-violet-300 focus:border-violet-500 focus:ring-4 focus:ring-violet-100 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white dark:placeholder:text-zinc-400 dark:focus:ring-violet-900/30"
               required
             />
@@ -132,7 +133,7 @@ function RegisterPage() {
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-violet-600"
             >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           </div>
 

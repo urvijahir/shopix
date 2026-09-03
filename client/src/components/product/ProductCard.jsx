@@ -1,35 +1,38 @@
 import { Link } from "react-router-dom";
 import { Heart, Star } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToWishlist } from "../../redux/wishlistSlice";
+import { addToWishlist, removeFromWishlist } from "../../redux/wishlistSlice";
 import toast from "react-hot-toast";
 
 function ProductCard({ product }) {
   const dispatch = useDispatch();
   const { wishlistItems } = useSelector((state) => state.wishlist);
   const isWishlisted = wishlistItems.some((item) => item._id === product._id);
+
   const wishlistHandler = (e) => {
     e.preventDefault();
     e.stopPropagation();
 
-    const alreadyExists = wishlistItems.some(
-      (item) => item._id === product._id,
-    );
-
-    if (alreadyExists) {
-      toast.error("Already in wishlist");
-      return;
+    if (isWishlisted) {
+      dispatch(removeFromWishlist(product._id));
+      toast.success("Removed from wishlist", {
+        id: "wishlist-toast",
+        duration: 1500,
+      });
+    } else {
+      dispatch(addToWishlist(product));
+      toast.success("Added to wishlist", {
+        id: "wishlist-toast",
+        duration: 1500,
+      });
     }
-
-    dispatch(addToWishlist(product));
-    toast.success("Added to wishlist");
   };
 
   return (
     <div className="group relative overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
       <div className="relative h-72 w-full overflow-hidden bg-zinc-50 dark:bg-zinc-950">
         {/* New Badge */}
-        {product.isNew && (
+        {product.isNewProduct && (
           <span className="absolute left-3 top-3 z-20 rounded-full bg-violet-600 px-3 py-1 text-xs font-bold text-white shadow-md">
             New
           </span>

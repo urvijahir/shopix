@@ -1,6 +1,6 @@
 function Footer() {
   return (
-    <footer className="mt-8 bg-white dark:bg-zinc-950">
+    <footer className=" bg-white dark:bg-zinc-950">
       <div className="mx-auto max-w-7xl px-4 py-10 text-zinc-900 dark:text-white">
         <h2 className="text-2xl font-bold dark:text-white">Shopix</h2>
 

@@ -46,7 +46,7 @@ const createProduct = async (req, res) => {
       colorImages,
       sizes,
       stock,
-      isNew,
+      isNewProduct,
     } = req.body;
 
     const product = new Product({
@@ -60,7 +60,7 @@ const createProduct = async (req, res) => {
       colorImages,
       sizes,
       stock,
-      isNew,
+      isNewProduct,
     });
 
     const createdProduct = await product.save();
@@ -122,8 +122,10 @@ const updateProduct = async (req, res) => {
       req.body.galleryImages !== undefined
         ? req.body.galleryImages
         : product.galleryImages;
-    product.isNew =
-      req.body.isNew !== undefined ? req.body.isNew : product.isNew;
+    product.isNewProduct =
+      req.body.isNewProduct !== undefined
+        ? req.body.isNewProduct
+        : product.isNewProduct;
 
     const updatedProduct = await product.save();
 

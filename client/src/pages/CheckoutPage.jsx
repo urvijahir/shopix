@@ -17,6 +17,8 @@ function CheckoutPage() {
 
   const { cartItems } = useSelector((state) => state.cart);
 
+  const { userInfo } = useSelector((state) => state.auth);
+
   const [loading, setLoading] = useState(false);
 
   const [orderPlaced, setOrderPlaced] = useState(false);
@@ -52,13 +54,21 @@ function CheckoutPage() {
     try {
       setLoading(true);
 
-      await axios.post(`${BASE_URL}/api/orders`, {
-        orderItems: cartItems,
-        shippingAddress: shippingData,
-        totalPrice,
-        paymentMethod,
-        isPaid: false,
-      });
+      await axios.post(
+        `${BASE_URL}/api/orders`,
+        {
+          orderItems: cartItems,
+          shippingAddress: shippingData,
+          totalPrice,
+          paymentMethod,
+          isPaid: false,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        },
+      );
 
       setPaymentMethod("Cash on Delivery");
       setOrderPlaced(true);

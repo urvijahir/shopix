@@ -48,6 +48,14 @@ function AdminOrdersPage() {
       return "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300";
     }
 
+    if (status === "Processing") {
+      return "bg-violet-100 text-violet-700 dark:bg-violet-900 dark:text-violet-300";
+    }
+
+    if (status === "Cancelled") {
+      return "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300";
+    }
+
     return "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300";
   };
 
@@ -122,8 +130,10 @@ function AdminOrdersPage() {
           >
             <option>All</option>
             <option>Pending</option>
+            <option>Processing</option>
             <option>Shipped</option>
             <option>Delivered</option>
+            <option>Cancelled</option>
           </select>
         </div>
 
@@ -296,8 +306,10 @@ function AdminOrdersPage() {
                     className="rounded-xl border border-zinc-300 bg-white px-4 py-3 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
                   >
                     <option value="Pending">Pending</option>
+                    <option value="Processing">Processing</option>
                     <option value="Shipped">Shipped</option>
                     <option value="Delivered">Delivered</option>
+                    <option value="Cancelled">Cancelled</option>
                   </select>
                 </div>
               </div>

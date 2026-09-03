@@ -1,11 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const wishlistItemsFromStorage = localStorage.getItem("wishlistItems")
-  ? JSON.parse(localStorage.getItem("wishlistItems"))
-  : [];
+const getUserWishlistKey = () => {
+  const userInfo = localStorage.getItem("userInfo");
+
+  if (!userInfo) return null;
+
+  const user = JSON.parse(userInfo);
+
+  return user?._id ? `wishlistItems_${user._id}` : null;
+};
+
+const getInitialWishlist = () => {
+  const key = getUserWishlistKey();
+
+  if (!key) return [];
+
+  const savedWishlist = localStorage.getItem(key);
+
+  return savedWishlist ? JSON.parse(savedWishlist) : [];
+};
 
 const initialState = {
-  wishlistItems: wishlistItemsFromStorage,
+  wishlistItems: getInitialWishlist(),
 };
 
 const wishlistSlice = createSlice({
@@ -23,10 +39,18 @@ const wishlistSlice = createSlice({
         state.wishlistItems.push(item);
       }
 
-      localStorage.setItem(
-        "wishlistItems",
-        JSON.stringify(state.wishlistItems),
-      );
+      const userInfo = localStorage.getItem("userInfo");
+
+      if (userInfo) {
+        const user = JSON.parse(userInfo);
+
+        if (user?._id) {
+          localStorage.setItem(
+            `wishlistItems_${user._id}`,
+            JSON.stringify(state.wishlistItems),
+          );
+        }
+      }
     },
 
     removeFromWishlist: (state, action) => {
@@ -34,14 +58,43 @@ const wishlistSlice = createSlice({
         (item) => item._id !== action.payload,
       );
 
-      localStorage.setItem(
-        "wishlistItems",
-        JSON.stringify(state.wishlistItems),
-      );
+      const userInfo = localStorage.getItem("userInfo");
+
+      if (userInfo) {
+        const user = JSON.parse(userInfo);
+
+        if (user?._id) {
+          localStorage.setItem(
+            `wishlistItems_${user._id}`,
+            JSON.stringify(state.wishlistItems),
+          );
+        }
+      }
+    },
+
+    // Load wishlist when user logs in
+    loadWishlistForUser: (state, action) => {
+      const userId = action.payload;
+
+      const key = `wishlistItems_${userId}`;
+      const savedWishlist = localStorage.getItem(key);
+
+      state.wishlistItems = savedWishlist ? JSON.parse(savedWishlist) : [];
+    },
+
+    // Clear Redux state only.
+    // IMPORTANT: Do NOT delete localStorage.
+    clearWishlistState: (state) => {
+      state.wishlistItems = [];
     },
   },
 });
 
-export const { addToWishlist, removeFromWishlist } = wishlistSlice.actions;
+export const {
+  addToWishlist,
+  removeFromWishlist,
+  loadWishlistForUser,
+  clearWishlistState,
+} = wishlistSlice.actions;
 
 export default wishlistSlice.reducer;

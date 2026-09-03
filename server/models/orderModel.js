@@ -2,6 +2,12 @@ import mongoose from "mongoose";
 
 const orderSchema = mongoose.Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+
     orderItems: [
       {
         title: String,
@@ -26,7 +32,7 @@ const orderSchema = mongoose.Schema(
 
     status: {
       type: String,
-      enum: ["Pending", "Shipped", "Delivered"],
+      enum: ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"],
       default: "Pending",
     },
 

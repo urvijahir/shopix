@@ -11,7 +11,7 @@ const productSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
-    isNew: {
+    isNewProduct: {
       type: Boolean,
       default: false,
     },

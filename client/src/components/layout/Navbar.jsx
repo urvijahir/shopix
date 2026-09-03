@@ -3,6 +3,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/authSlice";
+import { clearCartState } from "../../redux/cartSlice";
+import { clearWishlistState } from "../../redux/wishlistSlice";
 import toast from "react-hot-toast";
 import { BASE_URL } from "../../config";
 import { setSearch } from "../../redux/searchSlice";
@@ -61,8 +63,17 @@ function Navbar() {
   }, [isOpen]);
 
   const logoutHandler = () => {
+    // Clear cart from Redux only
+    dispatch(clearCartState());
+
+    // Clear wishlist from Redux only
+    dispatch(clearWishlistState());
+
+    // Logout user
     dispatch(logout());
+
     toast.success("Logged out successfully");
+
     setIsOpen(false);
   };
 

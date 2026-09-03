@@ -1,20 +1,44 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const cartItemsFromStorage = localStorage.getItem("cartItems")
-  ? JSON.parse(localStorage.getItem("cartItems"))
-  : [];
+// Get the currently logged-in user's cart storage key
+const getUserCartKey = () => {
+  const userInfo = localStorage.getItem("userInfo");
 
-const initialState = {
-  cartItems: cartItemsFromStorage,
+  if (!userInfo) return null;
+
+  const user = JSON.parse(userInfo);
+
+  return user?._id ? `cartItems_${user._id}` : null;
 };
 
+// Load the current user's cart when Redux starts
+const getInitialCart = () => {
+  const key = getUserCartKey();
+
+  if (!key) return [];
+
+  const savedCart = localStorage.getItem(key);
+
+  return savedCart ? JSON.parse(savedCart) : [];
+};
+
+const initialState = {
+  cartItems: getInitialCart(),
+};
+
+// Check whether two cart items are the same
 const isSameCartItem = (item, payload) =>
   item._id === payload._id &&
   item.selectedColor === payload.selectedColor &&
   item.selectedSize === payload.selectedSize;
 
+// Save cart for the currently logged-in user
 const saveCart = (cartItems) => {
-  localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  const key = getUserCartKey();
+
+  if (key) {
+    localStorage.setItem(key, JSON.stringify(cartItems));
+  }
 };
 
 const cartSlice = createSlice({
@@ -23,6 +47,7 @@ const cartSlice = createSlice({
   initialState,
 
   reducers: {
+    // Add product to cart
     addToCart: (state, action) => {
       const item = action.payload;
 
@@ -37,6 +62,7 @@ const cartSlice = createSlice({
       saveCart(state.cartItems);
     },
 
+    // Remove product from cart
     removeFromCart: (state, action) => {
       state.cartItems = state.cartItems.filter(
         (item) => !isSameCartItem(item, action.payload),
@@ -45,6 +71,7 @@ const cartSlice = createSlice({
       saveCart(state.cartItems);
     },
 
+    // Increase product quantity
     increaseQuantity: (state, action) => {
       const item = state.cartItems.find((x) =>
         isSameCartItem(x, action.payload),
@@ -57,6 +84,7 @@ const cartSlice = createSlice({
       saveCart(state.cartItems);
     },
 
+    // Decrease product quantity
     decreaseQuantity: (state, action) => {
       const item = state.cartItems.find((x) =>
         isSameCartItem(x, action.payload),
@@ -69,9 +97,31 @@ const cartSlice = createSlice({
       saveCart(state.cartItems);
     },
 
+    // Load a particular user's cart after login
+    loadCartForUser: (state, action) => {
+      const userId = action.payload;
+
+      const key = `cartItems_${userId}`;
+
+      const savedCart = localStorage.getItem(key);
+
+      state.cartItems = savedCart ? JSON.parse(savedCart) : [];
+    },
+
+    // Clear Redux cart only during logout
+    // IMPORTANT: This does NOT delete the user's saved cart
+    clearCartState: (state) => {
+      state.cartItems = [];
+    },
+
     clearCart: (state) => {
       state.cartItems = [];
-      localStorage.removeItem("cartItems");
+
+      const key = getUserCartKey();
+
+      if (key) {
+        localStorage.removeItem(key);
+      }
     },
   },
 });
@@ -81,6 +131,8 @@ export const {
   removeFromCart,
   increaseQuantity,
   decreaseQuantity,
+  loadCartForUser,
+  clearCartState,
   clearCart,
 } = cartSlice.actions;
 

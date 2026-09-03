@@ -38,7 +38,11 @@ Users can browse products, manage their cart and wishlist, place orders, submit 
 - Delete Products
 - Manage Product Stock
 - Manage Product Images
-- View All Orders
+- Manage Product Colors & Sizes
+- New Product Badge
+- View All Customer Orders
+- Filter Orders by Status
+- Search Orders
 - Update Order Status
 
 ---
@@ -77,17 +81,37 @@ Users can browse products, manage their cart and wishlist, place orders, submit 
 
 ![Home Page](./screenshots/home.png)
 
-### Product Details Page
+### Home Page - Dark Mode
+
+![Home Dark Mode](./screenshots/home-dark.png)
+
+### Product Details
 
 ![Product Details](./screenshots/product-details.png)
 
-### Checkout Page
+### Cart
+
+![Cart](./screenshots/cart.png)
+
+### Checkout
 
 ![Checkout](./screenshots/checkout.png)
+
+### Orders & Profile
+
+![Orders](./screenshots/orders.png)
 
 ### Admin Dashboard
 
 ![Admin Dashboard](./screenshots/admin-dashboard.png)
+
+### Admin Orders
+
+![Admin Orders](./screenshots/admin-orders.png)
+
+### Mobile Navigation
+
+![Mobile Navigation](./screenshots/mobile-menu.png)
 
 ---
 

@@ -7,6 +7,8 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 
 import { setCredentials } from "../redux/authSlice";
+import { loadCartForUser } from "../redux/cartSlice";
+import { loadWishlistForUser } from "../redux/wishlistSlice";
 
 import toast from "react-hot-toast";
 
@@ -39,7 +41,14 @@ function LoginPage() {
         password,
       });
 
+      // Save logged-in user
       dispatch(setCredentials(data));
+
+      // Load this user's saved cart
+      dispatch(loadCartForUser(data._id));
+
+      // Load this user's saved wishlist
+      dispatch(loadWishlistForUser(data._id));
 
       toast.success("Login successful");
       setLoading(false);
